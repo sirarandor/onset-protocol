@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dtrekh50fhgb7"
+path="res://.godot/imported/Cleansuit Multiplayer Nerd.obj-1ab4fa1cdac18c69079029df6531b0bb.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Cleansuit Multiplayer Nerd.obj-1ab4fa1cdac18c69079029df6531b0bb.mesh"]
+
+source_file="res://content/imports/cleansuitscientists/Multiplayer/Cleansuit Multiplayer Nerd.obj"
+dest_files=["res://.godot/imported/Cleansuit Multiplayer Nerd.obj-1ab4fa1cdac18c69079029df6531b0bb.mesh", "res://.godot/imported/Cleansuit Multiplayer Nerd.obj-1ab4fa1cdac18c69079029df6531b0bb.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

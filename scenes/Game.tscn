@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://bpqwkbkvvp5m3"]
+
+[ext_resource type="Script" path="res://source/Game.cs" id="1_lmcdu"]
+[ext_resource type="PackedScene" uid="uid://djdljg3g2skk2" path="res://scenes/living/Player.tscn" id="2_wqr4f"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_04bef"]
+size = Vector3(10, 1, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sgrst"]
+size = Vector3(10, 1, 10)
+
+[node name="Game" type="Node3D"]
+script = ExtResource("1_lmcdu")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_04bef")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_sgrst")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("2_wqr4f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31589, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.89965, 0)
+light_energy = 14.82
+light_indirect_energy = 1.855
+directional_shadow_mode = 1
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-1, 8.74228e-08, 3.82137e-15, 0, -4.37114e-08, 1, 8.74228e-08, 1, 4.37114e-08, 0, 10, 0)
+current = true

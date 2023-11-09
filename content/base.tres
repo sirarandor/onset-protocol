@@ -1,0 +1,43 @@
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://c6o0jrhk2ue8o"]
+
+[ext_resource type="FontFile" uid="uid://li877s3ntbxt" path="res://content/Mx437_DOS-V_re_ANK16.ttf" id="1_7j7y7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wfb2y"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7topc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ftm67"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_am1jk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iij5s"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_glgk4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5pp0k"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0wl2x"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gbbmg"]
+
+[resource]
+default_font = ExtResource("1_7j7y7")
+Button/colors/font_color = Color(0, 1, 0.298039, 1)
+Button/styles/disabled = SubResource("StyleBoxEmpty_wfb2y")
+Button/styles/focus = SubResource("StyleBoxEmpty_7topc")
+Button/styles/hover = SubResource("StyleBoxEmpty_ftm67")
+Button/styles/normal = SubResource("StyleBoxEmpty_am1jk")
+Button/styles/pressed = SubResource("StyleBoxEmpty_iij5s")
+Label/colors/font_color = Color(0, 1, 0.298039, 1)
+Label/colors/font_outline_color = Color(1, 1, 1, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0)
+Label/constants/line_spacing = 3
+Label/constants/outline_size = 0
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/constants/shadow_outline_size = 1
+Label/font_sizes/font_size = 16
+Label/styles/normal = SubResource("StyleBoxEmpty_glgk4")
+LineEdit/styles/focus = SubResource("StyleBoxEmpty_5pp0k")
+LineEdit/styles/normal = SubResource("StyleBoxEmpty_0wl2x")
+LineEdit/styles/read_only = SubResource("StyleBoxEmpty_gbbmg")

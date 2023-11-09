@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cn0f5tvkkhmo8"
+path="res://.godot/imported/Cleansuit HD.obj-f984de8650933421fea4241950a8d2dc.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Cleansuit HD.obj-f984de8650933421fea4241950a8d2dc.mesh"]
+
+source_file="res://content/imports/cleansuitscientists/HD/Cleansuit HD.obj"
+dest_files=["res://.godot/imported/Cleansuit HD.obj-f984de8650933421fea4241950a8d2dc.mesh", "res://.godot/imported/Cleansuit HD.obj-f984de8650933421fea4241950a8d2dc.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
