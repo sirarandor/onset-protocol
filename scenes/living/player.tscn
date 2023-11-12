@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://5y27084uv520"]
+
+[ext_resource type="Script" path="res://source/player.gd" id="1_5078v"]
+[ext_resource type="ArrayMesh" uid="uid://dtrekh50fhgb7" path="res://content/imports/cleansuitscientists/Multiplayer/Cleansuit Multiplayer Nerd.obj" id="1_fdrv5"]
+[ext_resource type="Script" path="res://source/player_char.gd" id="2_l3wxm"]
+[ext_resource type="Shader" path="res://rendering/shaders/player.gdshader" id="3_120ln"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7aul1"]
+render_priority = 0
+shader = ExtResource("3_120ln")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qmxxp"]
+
+[sub_resource type="Environment" id="Environment_fd5sc"]
+glow_enabled = true
+glow_intensity = 4.0
+glow_bloom = 1.0
+volumetric_fog_enabled = true
+
+[node name="Player" type="Node3D"]
+script = ExtResource("1_5078v")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+script = ExtResource("2_l3wxm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+transform = Transform3D(-0.025, 0, -2.18557e-09, 0, 0.025, 0, 2.18557e-09, 0, -0.025, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_7aul1")
+mesh = ExtResource("1_fdrv5")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.025)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_qmxxp")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 4, 0)
+environment = SubResource("Environment_fd5sc")
+
+[node name="HUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

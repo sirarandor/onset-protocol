@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://gjbdj6js6vn6"]
+
+[ext_resource type="Script" path="res://source/game.gd" id="1_lnwq7"]
+[ext_resource type="PackedScene" uid="uid://5y27084uv520" path="res://scenes/living/player.tscn" id="2_xctpk"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1p1ty"]
+size = Vector3(10, 0, 10)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_06lk1"]
+size = Vector2(10, 10)
+
+[node name="Game" type="Node3D"]
+script = ExtResource("1_lnwq7")
+
+[node name="World" type="Node" parent="."]
+
+[node name="Players" type="Node" parent="World"]
+
+[node name="Player" parent="World/Players" instance=ExtResource("2_xctpk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04901, 0)
+
+[node name="Area3D" type="Area3D" parent="World"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Area3D"]
+shape = SubResource("BoxShape3D_1p1ty")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Area3D"]
+mesh = SubResource("PlaneMesh_06lk1")
+skeleton = NodePath("../..")
