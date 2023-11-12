@@ -11,15 +11,15 @@ config_version=5
 [application]
 
 config/name="onset_protocol"
-run/main_scene="res://scenes/Menu.tscn"
-config/features=PackedStringArray("4.1", "C#", "Forward Plus")
-boot_splash/bg_color=Color(0, 0, 0, 1)
+run/main_scene="res://scenes/base/Main.tscn"
+config/features=PackedStringArray("4.1", "Forward Plus")
+boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 1)
 boot_splash/show_image=false
 config/icon="res://icon.svg"
 
-[dotnet]
+[autoload]
 
-project/assembly_name="onset_protocol"
+Main="*res://source/main.gd"
 
 [rendering]
 
