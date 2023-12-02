@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bxfex7xnyhg4k"
+path="res://.godot/imported/redead.obj-2ce22c3ae30efe9225c3a30727be52e9.mesh"
+
+[deps]
+
+files=["res://.godot/imported/redead.obj-2ce22c3ae30efe9225c3a30727be52e9.mesh"]
+
+source_file="res://content/imports/Nintendo 64 - The Legend of Zelda Ocarina of Time - ReDead/redead.obj"
+dest_files=["res://.godot/imported/redead.obj-2ce22c3ae30efe9225c3a30727be52e9.mesh", "res://.godot/imported/redead.obj-2ce22c3ae30efe9225c3a30727be52e9.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

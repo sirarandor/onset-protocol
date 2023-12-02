@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://gjbdj6js6vn6"]
+
+[ext_resource type="Script" path="res://source/game.gd" id="1_lnwq7"]
+[ext_resource type="Script" path="res://source/ship.gd" id="2_iu4fa"]
+[ext_resource type="PackedScene" uid="uid://hml01fgl3xwy" path="res://scenes/living/Player.tscn" id="2_xctpk"]
+[ext_resource type="ArrayMesh" uid="uid://dtrekh50fhgb7" path="res://content/imports/cleansuitscientists/Multiplayer/Cleansuit Multiplayer Nerd.obj" id="4_moxc3"]
+
+[node name="Game" type="Node3D"]
+script = ExtResource("1_lnwq7")
+
+[node name="Ship" type="Node" parent="."]
+script = ExtResource("2_iu4fa")
+
+[node name="Players" type="Node" parent="Ship"]
+
+[node name="Player" parent="Ship/Players" instance=ExtResource("2_xctpk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.077215, 0)
+
+[node name="CleansuitMultiplayerNerd" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.0115932, 0, 0.0221494, 0, 0.025, 0, -0.0221494, 0, 0.0115932, -18.8679, -2.38419e-07, -9.72735)
+mesh = ExtResource("4_moxc3")

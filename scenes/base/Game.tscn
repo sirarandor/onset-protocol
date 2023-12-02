@@ -1,29 +1,36 @@
-[gd_scene load_steps=5 format=3 uid="uid://gjbdj6js6vn6"]
+[gd_scene load_steps=9 format=3 uid="uid://gjbdj6js6vn6"]
 
 [ext_resource type="Script" path="res://source/game.gd" id="1_lnwq7"]
-[ext_resource type="PackedScene" uid="uid://5y27084uv520" path="res://scenes/living/player.tscn" id="2_xctpk"]
+[ext_resource type="Script" path="res://source/ship.gd" id="2_iu4fa"]
+[ext_resource type="PackedScene" uid="uid://hml01fgl3xwy" path="res://scenes/living/Player.tscn" id="2_xctpk"]
+[ext_resource type="ArrayMesh" uid="uid://dtrekh50fhgb7" path="res://content/imports/cleansuitscientists/Multiplayer/Cleansuit Multiplayer Nerd.obj" id="4_moxc3"]
+[ext_resource type="ArrayMesh" uid="uid://bxfex7xnyhg4k" path="res://content/imports/Nintendo 64 - The Legend of Zelda Ocarina of Time - ReDead/redead.obj" id="5_eifa3"]
+[ext_resource type="Texture2D" uid="uid://c5n7unj0vbfda" path="res://content/imports/Nintendo 64 - The Legend of Zelda Ocarina of Time - ReDead/redead_grp.png" id="6_qdjle"]
+[ext_resource type="Texture2D" uid="uid://d3q0odpb421ow" path="res://content/imports/Nintendo 64 - The Legend of Zelda Ocarina of Time - ReDead/redead_grp_emission.png" id="7_pnslx"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_1p1ty"]
-size = Vector3(10, 0, 10)
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_06lk1"]
-size = Vector2(10, 10)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ynluk"]
+albedo_color = Color(0, 0, 0, 1)
+albedo_texture = ExtResource("6_qdjle")
+albedo_texture_msdf = true
+emission_enabled = true
+emission_texture = ExtResource("7_pnslx")
 
 [node name="Game" type="Node3D"]
 script = ExtResource("1_lnwq7")
 
-[node name="World" type="Node" parent="."]
+[node name="Ship" type="Node" parent="."]
+script = ExtResource("2_iu4fa")
 
-[node name="Players" type="Node" parent="World"]
+[node name="Players" type="Node" parent="Ship"]
 
-[node name="Player" parent="World/Players" instance=ExtResource("2_xctpk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04901, 0)
+[node name="Player" parent="Ship/Players" instance=ExtResource("2_xctpk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.077215, 0)
 
-[node name="Area3D" type="Area3D" parent="World"]
+[node name="CleansuitMultiplayerNerd" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.0248265, 0, 0.00294018, 0, 0.025, 0, -0.00294018, 0, 0.0248265, 0.382336, -2.38419e-07, -3.71292)
+mesh = ExtResource("4_moxc3")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Area3D"]
-shape = SubResource("BoxShape3D_1p1ty")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Area3D"]
-mesh = SubResource("PlaneMesh_06lk1")
-skeleton = NodePath("../..")
+[node name="Redead" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.0105277, 0, 0.00922864, 0, 0.014, 0, -0.00922864, 0, -0.0105277, -0.758889, 0, 0.758256)
+mesh = ExtResource("5_eifa3")
+surface_material_override/2 = SubResource("StandardMaterial3D_ynluk")

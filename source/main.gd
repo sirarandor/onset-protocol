@@ -12,7 +12,7 @@ func _ready():
 	GameScene = ResourceLoader.load("res://scenes/base/Game.tscn")
 	LobbyScene = ResourceLoader.load("res://scenes/base/Lobby.tscn")
 	
-	var MenuNode = MenuScene.instantiate();
+	MenuNode = MenuScene.instantiate();
 	
 	MenuNode.get_node("Label/StartServer").pressed.connect(_server)
 	MenuNode.get_node("Label/ConnectClient").pressed.connect(_client)
@@ -24,12 +24,11 @@ func _process(delta):
 	pass
 
 func _server():
-
+	get_node("Menu").queue_free()
+	remove_child(get_node("Menu"))
+	
 	var GameNode = GameScene.instantiate()
 	add_child(GameNode)
-	
-	get_node("Menu").queue_free()
-	MenuNode = null
 
 func _client():
 	pass

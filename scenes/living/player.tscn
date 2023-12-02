@@ -1,43 +1,118 @@
-[gd_scene load_steps=8 format=3 uid="uid://5y27084uv520"]
+[gd_scene load_steps=19 format=3 uid="uid://hml01fgl3xwy"]
 
-[ext_resource type="Script" path="res://source/player.gd" id="1_5078v"]
 [ext_resource type="ArrayMesh" uid="uid://dtrekh50fhgb7" path="res://content/imports/cleansuitscientists/Multiplayer/Cleansuit Multiplayer Nerd.obj" id="1_fdrv5"]
-[ext_resource type="Script" path="res://source/player_char.gd" id="2_l3wxm"]
+[ext_resource type="Script" path="res://source/player/player_char.gd" id="1_kh53f"]
 [ext_resource type="Shader" path="res://rendering/shaders/player.gdshader" id="3_120ln"]
+[ext_resource type="Texture2D" uid="uid://crvt5t55awdkm" path="res://content/textures/flashlight.jpg" id="4_2w4yd"]
+[ext_resource type="Shader" path="res://rendering/shaders/screen/static.gdshader" id="5_dxc6j"]
+[ext_resource type="Script" path="res://source/player/HUD/terminal.gd" id="6_2x4wt"]
+[ext_resource type="Script" path="res://source/player/HUD/system.gd" id="6_5m2uk"]
+[ext_resource type="Theme" uid="uid://c6o0jrhk2ue8o" path="res://content/base.tres" id="6_5sfas"]
+[ext_resource type="Script" path="res://source/player/HUD/monitor.gd" id="7_ow2wh"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7aul1"]
+[sub_resource type="QuadMesh" id="QuadMesh_qttmi"]
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ejc2w"]
 render_priority = 0
 shader = ExtResource("3_120ln")
+shader_parameter/outlineColor = Color(0, 0, 0, 1)
+shader_parameter/depth_threshold = 1.0
+shader_parameter/normal_threshold = 1.5
+shader_parameter/normal_smoothing = 0.0
+shader_parameter/max_thickness = 5.0
+shader_parameter/min_thickness = 1.0
+shader_parameter/max_distance = 75.0
+shader_parameter/min_distance = 2.0
+shader_parameter/grazing_fresnel_power = 0.0
+shader_parameter/grazing_angle_mask_power = 0.0
+shader_parameter/grazing_angle_modulation_factor = 0.0
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qmxxp"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fwn2s"]
+radius = 0.25
 
-[sub_resource type="Environment" id="Environment_fd5sc"]
-glow_enabled = true
-glow_intensity = 4.0
+[sub_resource type="Environment" id="Environment_s47f4"]
+ssr_enabled = true
+ssao_enabled = true
+sdfgi_enabled = true
+fog_light_energy = 0.0
+volumetric_fog_albedo = Color(0, 0, 0, 1)
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_8hia2"]
+auto_exposure_enabled = true
+auto_exposure_speed = 4.0
+frustum_focal_length = 12.0
+auto_exposure_min_exposure_value = 0.0
+auto_exposure_max_exposure_value = 16.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ssydo"]
+shader = ExtResource("5_dxc6j")
+
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_mn83j"]
+
+[sub_resource type="Environment" id="Environment_xgbuh"]
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 8.85
+sdfgi_use_occlusion = true
+sdfgi_read_sky_light = false
+sdfgi_y_scale = 2
+glow_normalized = true
+glow_intensity = 0.5
 glow_bloom = 1.0
+glow_blend_mode = 1
+fog_light_color = Color(0.0156863, 0.0156863, 0.0156863, 1)
 volumetric_fog_enabled = true
+volumetric_fog_albedo = Color(0.0156863, 0.0156863, 0.0156863, 1)
+adjustment_brightness = 4.15
 
-[node name="Player" type="Node3D"]
-script = ExtResource("1_5078v")
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_5pvo6"]
+auto_exposure_enabled = true
+auto_exposure_speed = 4.0
+auto_exposure_min_exposure_value = 0.0
+auto_exposure_max_exposure_value = 16.0
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-script = ExtResource("2_l3wxm")
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_kh53f")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+[node name="PlayerMesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(-0.025, 0, -2.18557e-09, 0, 0.025, 0, 2.18557e-09, 0, -0.025, 0, 0, 0)
-material_override = SubResource("ShaderMaterial_7aul1")
+layers = 3
 mesh = ExtResource("1_fdrv5")
 
-[node name="SpotLight3D" type="SpotLight3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.025)
+[node name="PlayerOutline" type="MeshInstance3D" parent="PlayerMesh"]
+visible = false
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_qttmi")
+surface_material_override/0 = SubResource("ShaderMaterial_ejc2w")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+[node name="Ambient" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2.29017, -0.141594)
+light_energy = 0.01
+spot_range = 6.51803
+spot_angle = 64.2844
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("CapsuleShape3D_qmxxp")
+shape = SubResource("CapsuleShape3D_fwn2s")
+disabled = true
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 4, 0)
-environment = SubResource("Environment_fd5sc")
+[node name="FirstPerson" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.54964, -0.237967)
+environment = SubResource("Environment_s47f4")
+attributes = SubResource("CameraAttributesPhysical_8hia2")
+current = true
+
+[node name="Flashlight" type="SpotLight3D" parent="FirstPerson"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.314408, -0.409571, 0)
+layers = 3
+light_energy = 0.5
+light_indirect_energy = 0.0
+light_projector = ExtResource("4_2w4yd")
+shadow_enabled = true
+spot_range = 8.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.05
 
 [node name="HUD" type="Control" parent="."]
 layout_mode = 3
@@ -46,3 +121,119 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("6_5sfas")
+
+[node name="Screen" type="Control" parent="HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Static" type="ColorRect" parent="HUD/Screen"]
+material = SubResource("ShaderMaterial_ssydo")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="debug" type="Container" parent="HUD"]
+layout_mode = 0
+offset_right = 212.0
+offset_bottom = 194.0
+theme = ExtResource("6_5sfas")
+
+[node name="fps" type="Label" parent="HUD/debug"]
+layout_mode = 2
+text = "Is this affected by the tingy? "
+
+[node name="Window" type="Window" parent="HUD"]
+position = Vector2i(0, 36)
+size = Vector2i(500, 500)
+unresizable = true
+mouse_passthrough = true
+theme = ExtResource("6_5sfas")
+script = ExtResource("6_5m2uk")
+
+[node name="System" type="Control" parent="HUD/Window"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabContainer" type="TabContainer" parent="HUD/Window/System"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("6_5sfas")
+tab_alignment = 1
+
+[node name="[ Terminal ]" type="Control" parent="HUD/Window/System/TabContainer"]
+layout_mode = 2
+script = ExtResource("6_2x4wt")
+
+[node name="LineEdit" type="LineEdit" parent="HUD/Window/System/TabContainer/[ Terminal ]"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 16
+max_length = 64
+
+[node name="TextEdit" type="TextEdit" parent="HUD/Window/System/TabContainer/[ Terminal ]"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+editable = false
+context_menu_enabled = false
+shortcut_keys_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+wrap_mode = 1
+autowrap_mode = 1
+syntax_highlighter = SubResource("CodeHighlighter_mn83j")
+caret_type = 1
+
+[node name="[ Inventory ]" type="Control" parent="HUD/Window/System/TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="[ Monitor ]" type="Control" parent="HUD/Window/System/TabContainer"]
+visible = false
+layout_mode = 2
+script = ExtResource("7_ow2wh")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="HUD/Window/System/TabContainer/[ Monitor ]"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SubViewport" type="SubViewport" parent="HUD/Window/System/TabContainer/[ Monitor ]/SubViewportContainer"]
+handle_input_locally = false
+render_target_update_mode = 0
+
+[node name="ThirdPerson" type="Camera3D" parent="HUD/Window/System/TabContainer/[ Monitor ]/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 4, 0)
+top_level = true
+cull_mask = 1048574
+environment = SubResource("Environment_xgbuh")
+attributes = SubResource("CameraAttributesPhysical_5pvo6")
+projection = 1
+size = 16.0

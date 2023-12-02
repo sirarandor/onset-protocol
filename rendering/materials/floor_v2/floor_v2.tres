@@ -1,0 +1,15 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://hearrqnvy416"]
+
+[ext_resource type="Texture2D" uid="uid://ba6gx3t2rsk1c" path="res://rendering/materials/floor_v2/floor_v3_albedo.png" id="1_5t7ci"]
+
+[resource]
+albedo_color = Color(0.533333, 0.533333, 0.533333, 1)
+albedo_texture = ExtResource("1_5t7ci")
+roughness_texture = ExtResource("1_5t7ci")
+roughness_texture_channel = 4
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 0.1
+emission_operator = 1
+emission_texture = ExtResource("1_5t7ci")
+uv1_triplanar = true
+uv1_world_triplanar = true
