@@ -4,10 +4,11 @@ extends CharacterBody3D
 const SPEED = 2.5
 const ROT_SPEED = 0.05
 var JUMP_VELOCITY = 2
-var mouse_sens = 0.3
+var mouse_sens = 0.2
 var camera_anglev = 0
 var cam
 var camh = 4
+var rng = RandomNumberGenerator
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -17,6 +18,8 @@ func _ready():
 	$HUD/Window.visible = false;
 	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	
+	rng = RandomNumberGenerator.new()
 	
 func _process(delta):
 		cam.position = position
@@ -45,7 +48,9 @@ func _physics_process(delta):
 	if direction:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
+		$AnimationPlayer.play("player/p_walking")
 	else:
+		$AnimationPlayer.stop()
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 		
@@ -67,10 +72,12 @@ func _input(event):
 	if event.is_action_pressed("onset_showsystem"):
 		if $HUD/Window.visible:
 			$HUD/Window.hide()
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		else:
+			Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 			$HUD/Window.show()
-			
+	
 	if event is InputEventMouseMotion:
 		self.rotate_y(deg_to_rad(-event.relative.x*mouse_sens))
-		#self.rotate_z(deg_to_rad(-event.relative.y*mouse_sens))
+		$FirstPerson.rotate_x(deg_to_rad(-event.relative.y*mouse_sens))
 	pass

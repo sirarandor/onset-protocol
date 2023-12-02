@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://1gvtja2ip210"]
 
-[ext_resource type="Script" path="res://source/room.gd" id="1_l4y7s"]
+[ext_resource type="Script" path="res://source/ship/room.gd" id="1_l4y7s"]
 [ext_resource type="Material" uid="uid://bna77f7342pk2" path="res://rendering/materials/debug/wall.tres" id="2_3m3yw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_oxdqs"]
@@ -49,7 +49,7 @@ mesh = SubResource("BoxMesh_2kb55")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Ceiling"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
-light_color = Color(0.784314, 1, 1, 1)
+light_color = Color(0.901961, 1, 1, 1)
 light_energy = 0.25
 light_volumetric_fog_energy = 0.0
 shadow_enabled = true

@@ -3,7 +3,7 @@ extends Node
 const gen_floor = 1
 
 const SHIP_SIZE  = 256
-const SHIP_ROOMS = 32
+const SHIP_ROOMS = 128
 
 # This is a {Vector2 : int} dictionary
 var s_td : Dictionary
@@ -13,6 +13,9 @@ var rng
 var RoomScene
 var DoorScene
 var BlockScene
+
+#Rooms and Doors counter
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -55,16 +58,10 @@ func generate():
 func gen_bsl(rx, ry):
 	var p = Vector2(0,0)
 	var d = [1,2,3,4]
+	var ac = 0
+	var ad = 0
 	
 	for c in SHIP_ROOMS:
-			
-			#Check if there is already a room in the location we are in, if there is, pass
-			
-			
-			#Generate a room in the location of our pointer
-			#for l in range(rx-p.x, rx+p.x):
-			#	for k in range(ry-p.y, ry+p.y):
-			#		s_td[Vector2(l,k)] = 1
 					
 			#Set up walls around the room to be either filled in or replaced with doors.
 			if s_td[Vector2(p.x+(rx/2)+1, p.y)] != 2:
@@ -79,9 +76,16 @@ func gen_bsl(rx, ry):
 			if s_td[Vector2(p.x, p.y-(rx/2)-1)] != 4:
 				s_td[Vector2(p.x, p.y-(rx/2)-1)] = 5
 			
-			var r = RoomScene.instantiate()
-			r.position = Vector3(p.x,0,p.y)
-			add_child(r)
+			#Check to see if there is already a room where we are
+			if s_td[p] == 1:
+				pass
+			else:
+				s_td[p] = 1
+				var r = RoomScene.instantiate()
+				r.position = Vector3(p.x,0,p.y)
+				r.name = "r" + str(ac)
+				$Rooms.add_child(r)
+				ac += 1
 			
 			#Pick a new direction to go to, make sure it isn't backwards. Also add a door to where we want to go.
 			var l = d[rng.randi_range(0,2)]
@@ -128,30 +132,35 @@ func gen_bsl(rx, ry):
 					
 					p.y -= 1+rx
 					d = [1,2,4]
+	print("Generated ", ac, " of ", SHIP_ROOMS, " rooms.")
 
 	for c in s_td:
 		if s_td[c] == 2:
 			var dr = DoorScene.instantiate() 
 			dr.position = Vector3(c.x, 1.5, c.y)
-			add_child(dr)
-			print("Added a door ",c)
+			dr.name = "d" + str(ad)
+			$Doors.add_child(dr)
+			ad += 1
+			#print("Added a door ",c)
 		if s_td[c] == 4: 
 			var dr = DoorScene.instantiate() 
 			dr.position = Vector3(c.x, 1.5, c.y)
+			dr.name = "d" + str(ad)
 			dr.rotation_degrees = Vector3(0,90,0)
-			add_child(dr)
-			print("Added a door ",c)
+			$Doors.add_child(dr)
+			ad += 1
+			#print("Added a door ",c)
 		if s_td[c] == 3: 
 			var b = BlockScene.instantiate()
 			b.position = Vector3(c.x, 1.5, c.y)
 			add_child(b)
-			print("Added a block ",c)
+			#print("Added a block ",c)
 		if s_td[c] == 5: 
 			var b = BlockScene.instantiate()
 			b.rotation_degrees = Vector3(0,90,0)
 			b.position = Vector3(c.x, 1.5, c.y)
 			add_child(b)
-			print("Added a block ",c)
+			#print("Added a block ",c)
 
 		
 	

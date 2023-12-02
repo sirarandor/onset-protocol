@@ -15,6 +15,8 @@ func _input(event):
 	if event.is_action_pressed("onset_showsystem"):
 		if self.visible:
 			self.hide()
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		else:
 			self.show()
+			Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 	pass

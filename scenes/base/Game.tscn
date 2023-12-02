@@ -1,19 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://gjbdj6js6vn6"]
+[gd_scene load_steps=5 format=3 uid="uid://gjbdj6js6vn6"]
 
 [ext_resource type="Script" path="res://source/game.gd" id="1_lnwq7"]
-[ext_resource type="Script" path="res://source/ship.gd" id="2_iu4fa"]
-[ext_resource type="PackedScene" uid="uid://hml01fgl3xwy" path="res://scenes/living/Player.tscn" id="2_xctpk"]
-[ext_resource type="ArrayMesh" uid="uid://dtrekh50fhgb7" path="res://content/imports/cleansuitscientists/Multiplayer/Cleansuit Multiplayer Nerd.obj" id="4_moxc3"]
-[ext_resource type="ArrayMesh" uid="uid://bxfex7xnyhg4k" path="res://content/imports/Nintendo 64 - The Legend of Zelda Ocarina of Time - ReDead/redead.obj" id="5_eifa3"]
-[ext_resource type="Texture2D" uid="uid://c5n7unj0vbfda" path="res://content/imports/Nintendo 64 - The Legend of Zelda Ocarina of Time - ReDead/redead_grp.png" id="6_qdjle"]
-[ext_resource type="Texture2D" uid="uid://d3q0odpb421ow" path="res://content/imports/Nintendo 64 - The Legend of Zelda Ocarina of Time - ReDead/redead_grp_emission.png" id="7_pnslx"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ynluk"]
-albedo_color = Color(0, 0, 0, 1)
-albedo_texture = ExtResource("6_qdjle")
-albedo_texture_msdf = true
-emission_enabled = true
-emission_texture = ExtResource("7_pnslx")
+[ext_resource type="Script" path="res://source/ship/ship.gd" id="2_iu4fa"]
+[ext_resource type="PackedScene" uid="uid://hml01fgl3xwy" path="res://scenes/living/player.tscn" id="2_xctpk"]
+[ext_resource type="PackedScene" uid="uid://csi0qhdy054av" path="res://scenes/living/Intruder.tscn" id="5_s16vy"]
 
 [node name="Game" type="Node3D"]
 script = ExtResource("1_lnwq7")
@@ -21,16 +11,15 @@ script = ExtResource("1_lnwq7")
 [node name="Ship" type="Node" parent="."]
 script = ExtResource("2_iu4fa")
 
+[node name="Rooms" type="Node" parent="Ship"]
+
+[node name="Doors" type="Node" parent="Ship"]
+
 [node name="Players" type="Node" parent="Ship"]
 
 [node name="Player" parent="Ship/Players" instance=ExtResource("2_xctpk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.077215, 0)
 
-[node name="CleansuitMultiplayerNerd" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.0248265, 0, 0.00294018, 0, 0.025, 0, -0.00294018, 0, 0.0248265, 0.382336, -2.38419e-07, -3.71292)
-mesh = ExtResource("4_moxc3")
-
-[node name="Redead" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.0105277, 0, 0.00922864, 0, 0.014, 0, -0.00922864, 0, -0.0105277, -0.758889, 0, 0.758256)
-mesh = ExtResource("5_eifa3")
-surface_material_override/2 = SubResource("StandardMaterial3D_ynluk")
+[node name="Intruder" parent="." instance=ExtResource("5_s16vy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.274, -0.25, -1.922)
+visible = false
