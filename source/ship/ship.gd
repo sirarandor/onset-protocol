@@ -3,7 +3,7 @@ extends Node
 const gen_floor = 1
 
 const SHIP_SIZE  = 256
-const SHIP_ROOMS = 128
+const SHIP_ROOMS = 100
 
 # This is a {Vector2 : int} dictionary
 var s_td : Dictionary

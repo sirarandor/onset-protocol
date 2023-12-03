@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4x0av1wsexlm"]
+
+[ext_resource type="Script" path="res://source/player/HUD/monitor.gd" id="1_qms3l"]
+
+[node name="Monitor" type="Node3D"]
+script = ExtResource("1_qms3l")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 8, 0)
+projection = 1
+size = 16.0

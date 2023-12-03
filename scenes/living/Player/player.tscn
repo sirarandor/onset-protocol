@@ -1,14 +1,20 @@
-[gd_scene load_steps=22 format=3 uid="uid://hml01fgl3xwy"]
+[gd_scene load_steps=23 format=3 uid="uid://hml01fgl3xwy"]
 
-[ext_resource type="Script" path="res://source/player/player_char.gd" id="1_kh53f"]
-[ext_resource type="Texture2D" uid="uid://c42iv5c4o1yw0" path="res://content/imports/scientist-updated/this_man_css_template5.png" id="2_gq7l2"]
-[ext_resource type="AudioStream" uid="uid://gayqvmsvugod" path="res://content/audio/player/footstep-1-83098.mp3" id="2_w1xlk"]
-[ext_resource type="Texture2D" uid="uid://crvt5t55awdkm" path="res://content/textures/flashlight.jpg" id="4_2w4yd"]
-[ext_resource type="Shader" path="res://rendering/shaders/screen/static.gdshader" id="5_dxc6j"]
-[ext_resource type="Script" path="res://source/player/HUD/terminal.gd" id="6_2x4wt"]
-[ext_resource type="Script" path="res://source/player/HUD/system.gd" id="6_5m2uk"]
-[ext_resource type="Theme" uid="uid://c6o0jrhk2ue8o" path="res://content/base.tres" id="6_5sfas"]
-[ext_resource type="Script" path="res://source/player/HUD/monitor.gd" id="7_ow2wh"]
+[ext_resource type="Script" path="res://source/player/player_char.gd" id="1_o2fjf"]
+[ext_resource type="AudioStream" uid="uid://gayqvmsvugod" path="res://content/audio/player/footstep-1-83098.mp3" id="2_o12bw"]
+[ext_resource type="Texture2D" uid="uid://c42iv5c4o1yw0" path="res://content/imports/scientist-updated/this_man_css_template5.png" id="3_tx24v"]
+[ext_resource type="Texture2D" uid="uid://crvt5t55awdkm" path="res://content/textures/flashlight.jpg" id="4_uyph4"]
+[ext_resource type="Theme" uid="uid://c6o0jrhk2ue8o" path="res://content/base.tres" id="5_5ex1g"]
+[ext_resource type="Shader" path="res://rendering/shaders/screen/static.gdshader" id="6_xyi7t"]
+[ext_resource type="Script" path="res://source/player/HUD/system.gd" id="7_wkwfq"]
+[ext_resource type="Script" path="res://source/player/HUD/terminal.gd" id="8_mn7w6"]
+
+[sub_resource type="Gradient" id="Gradient_v1ctx"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_f56lx"]
+gradient = SubResource("Gradient_v1ctx")
 
 [sub_resource type="Animation" id="Animation_v5nex"]
 resource_name = "p_walking"
@@ -44,7 +50,7 @@ radius = 0.25
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3i20y"]
 resource_name = "css_template5"
 cull_mode = 2
-albedo_texture = ExtResource("2_gq7l2")
+albedo_texture = ExtResource("3_tx24v")
 roughness = 0.690035
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_gjynt"]
@@ -172,38 +178,29 @@ auto_exposure_min_exposure_value = 0.0
 auto_exposure_max_exposure_value = 16.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ssydo"]
-shader = ExtResource("5_dxc6j")
+shader = ExtResource("6_xyi7t")
 
 [sub_resource type="CodeHighlighter" id="CodeHighlighter_mn83j"]
 
-[sub_resource type="Environment" id="Environment_xgbuh"]
-ambient_light_color = Color(1, 1, 1, 1)
-ambient_light_energy = 8.85
-sdfgi_use_occlusion = true
-sdfgi_read_sky_light = false
-sdfgi_y_scale = 2
-glow_normalized = true
-glow_intensity = 0.5
-glow_bloom = 1.0
-glow_blend_mode = 1
-fog_light_color = Color(0.0156863, 0.0156863, 0.0156863, 1)
-volumetric_fog_enabled = true
-volumetric_fog_albedo = Color(0.0156863, 0.0156863, 0.0156863, 1)
-adjustment_brightness = 4.15
+[sub_resource type="GDScript" id="GDScript_l8b7r"]
 
-[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_5pvo6"]
-auto_exposure_enabled = true
-auto_exposure_speed = 4.0
-auto_exposure_min_exposure_value = 0.0
-auto_exposure_max_exposure_value = 16.0
+[sub_resource type="Environment" id="Environment_m76vd"]
+glow_enabled = true
+fog_light_color = Color(1, 1, 1, 1)
 
 [node name="Player" type="CharacterBody3D"]
-script = ExtResource("1_kh53f")
+collision_layer = 3
+script = ExtResource("1_o2fjf")
+
+[node name="Glyph" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.0221813, 0.999754, 0, -0.999754, -0.0221813, 0, 4, -0.031)
+layers = 2
+texture = SubResource("GradientTexture2D_f56lx")
 
 [node name="Sounds" type="Node3D" parent="."]
 
 [node name="Footstep" type="AudioStreamPlayer3D" parent="Sounds"]
-stream = ExtResource("2_w1xlk")
+stream = ExtResource("2_o12bw")
 
 [node name="AudioListener3D" type="AudioListener3D" parent="."]
 current = true
@@ -435,11 +432,12 @@ bones/28/rotation = Quaternion(0.679706, -0.679706, 0.194936, 0.194936)
 bones/28/scale = Vector3(1, 1, 1)
 
 [node name="Technician" type="MeshInstance3D" parent="Rig/metarig/Skeleton3D"]
+layers = 3
 mesh = SubResource("ArrayMesh_gjynt")
 skin = SubResource("Skin_kfhv7")
 
 [node name="FirstPerson" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.68969, -0.237967)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.69, -0.238)
 environment = SubResource("Environment_s47f4")
 attributes = SubResource("CameraAttributesPhysical_8hia2")
 current = true
@@ -450,10 +448,9 @@ margin = 0.25
 
 [node name="Flashlight" type="SpotLight3D" parent="FirstPerson/SpringArm3D"]
 transform = Transform3D(-2.5, 0, 2.18557e-07, 0, 2.5, 0, -2.18557e-07, 0, -2.5, 0, 0, 0)
-layers = 3
 light_energy = 0.5
 light_indirect_energy = 0.0
-light_projector = ExtResource("4_2w4yd")
+light_projector = ExtResource("4_uyph4")
 shadow_enabled = true
 spot_range = 16.0
 spot_angle = 30.0
@@ -466,7 +463,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("6_5sfas")
+theme = ExtResource("5_5ex1g")
 
 [node name="Screen" type="Control" parent="HUD"]
 layout_mode = 1
@@ -489,19 +486,21 @@ grow_vertical = 2
 layout_mode = 0
 offset_right = 212.0
 offset_bottom = 194.0
-theme = ExtResource("6_5sfas")
+theme = ExtResource("5_5ex1g")
 
 [node name="fps" type="Label" parent="HUD/debug"]
 layout_mode = 2
 text = "Is this affected by the tingy? "
 
 [node name="Window" type="Window" parent="HUD"]
-position = Vector2i(0, 36)
-size = Vector2i(500, 500)
+mode = 2
+initial_position = 1
+size = Vector2i(1280, 720)
+exclusive = true
 unresizable = true
 mouse_passthrough = true
-theme = ExtResource("6_5sfas")
-script = ExtResource("6_5m2uk")
+theme = ExtResource("5_5ex1g")
+script = ExtResource("7_wkwfq")
 
 [node name="System" type="Control" parent="HUD/Window"]
 layout_mode = 3
@@ -518,12 +517,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("6_5sfas")
+theme = ExtResource("5_5ex1g")
 tab_alignment = 1
 
 [node name="[ Terminal ]" type="Control" parent="HUD/Window/System/TabContainer"]
 layout_mode = 2
-script = ExtResource("6_2x4wt")
+script = ExtResource("8_mn7w6")
 
 [node name="LineEdit" type="LineEdit" parent="HUD/Window/System/TabContainer/[ Terminal ]"]
 layout_mode = 1
@@ -563,22 +562,26 @@ layout_mode = 2
 [node name="[ Monitor ]" type="Control" parent="HUD/Window/System/TabContainer"]
 visible = false
 layout_mode = 2
-script = ExtResource("7_ow2wh")
+script = SubResource("GDScript_l8b7r")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="HUD/Window/System/TabContainer/[ Monitor ]"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="SubViewport" type="SubViewport" parent="HUD/Window/System/TabContainer/[ Monitor ]/SubViewportContainer"]
 handle_input_locally = false
+size = Vector2i(1280, 720)
+size_2d_override_stretch = true
 render_target_update_mode = 0
 
 [node name="ThirdPerson" type="Camera3D" parent="HUD/Window/System/TabContainer/[ Monitor ]/SubViewportContainer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 4, 0)
-top_level = true
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 8, 0)
 cull_mask = 1048574
-environment = SubResource("Environment_xgbuh")
-attributes = SubResource("CameraAttributesPhysical_5pvo6")
+environment = SubResource("Environment_m76vd")
 projection = 1
-size = 16.0
+current = true
+size = 24.0

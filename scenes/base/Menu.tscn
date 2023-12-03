@@ -73,17 +73,5 @@ grow_horizontal = 2
 text = "USER SETTINGS"
 horizontal_alignment = 1
 
-[node name="ColorPicker" type="ColorPicker" parent="Panel/Label"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 79.0
-offset_top = 107.0
-offset_right = 293.0
-offset_bottom = 639.0
-grow_horizontal = 2
-scale = Vector2(0.5, 0.5)
-
 [connection signal="pressed" from="Label/StartServer" to="." method="_on_start_server_pressed"]
 [connection signal="pressed" from="Label/ConnectClient" to="." method="_on_connect_client_pressed"]

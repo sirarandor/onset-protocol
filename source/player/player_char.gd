@@ -4,10 +4,10 @@ extends CharacterBody3D
 const SPEED = 2.5
 const ROT_SPEED = 0.05
 var JUMP_VELOCITY = 2
-var mouse_sens = 0.2
+var mouse_sens = 0.05
 var camera_anglev = 0
 var cam
-var camh = 4
+var camh = 8
 var rng = RandomNumberGenerator
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -15,7 +15,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready():
 	cam = $"HUD/Window/System/TabContainer/[ Monitor ]/SubViewportContainer/SubViewport/ThirdPerson"
-	$HUD/Window.visible = false;
+	#$HUD/System.visible = false;
 	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
@@ -24,7 +24,6 @@ func _ready():
 func _process(delta):
 		cam.position = position
 		cam.position.y = position.y + camh
-		
 		$HUD/debug/fps.text = "FPS: " + str(Engine.get_frames_per_second()) + "\n" + "POS: " + str(self.position)
 	
 func _physics_process(delta):
@@ -80,4 +79,5 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		self.rotate_y(deg_to_rad(-event.relative.x*mouse_sens))
 		$FirstPerson.rotate_x(deg_to_rad(-event.relative.y*mouse_sens))
+		
 	pass

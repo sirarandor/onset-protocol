@@ -20,10 +20,12 @@ func _toggle_door():
 	if state == "open":
 		$AnimationPlayer.play("door_close")
 		$AudioStreamPlayer3D.play()
+		$Sliding/Glyph.modulate = Color(100,0,0)
 		state = "closed"
 	elif state == "closed":
 		$AnimationPlayer.play("door_open")
 		$AudioStreamPlayer3D.play()
+		$Sliding/Glyph.modulate = Color(0,100,0)
 		state = "open"
 
 # Called when the node enters the scene tree for the first time.
@@ -31,12 +33,12 @@ func _ready():
 	connect("open_door", _open_door)
 	connect("close_door", _close_door)
 	connect("toggle_door", _toggle_door)
-	
-	$Sliding/Label3D.text = name
-	$Sliding/Label3D2.text = name
+
+	$Sliding/Glyph/Sigil.text = name
 	
 	state = "closed"
 	$AnimationPlayer.play("door_close")
+	$Sliding/Glyph.modulate = Color(100,0,0)
 	
 #unc _process(delta):
 	#emit_signal("open_door")

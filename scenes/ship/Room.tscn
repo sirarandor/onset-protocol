@@ -1,10 +1,20 @@
-[gd_scene load_steps=9 format=3 uid="uid://1gvtja2ip210"]
+[gd_scene load_steps=12 format=3 uid="uid://1gvtja2ip210"]
 
 [ext_resource type="Script" path="res://source/ship/room.gd" id="1_l4y7s"]
 [ext_resource type="Material" uid="uid://bna77f7342pk2" path="res://rendering/materials/debug/wall.tres" id="2_3m3yw"]
+[ext_resource type="FontFile" uid="uid://li877s3ntbxt" path="res://content/fonts/Mx437_DOS-V_re_ANK16.ttf" id="2_bmflw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_oxdqs"]
 size = Vector3(7, 2, 7)
+
+[sub_resource type="Gradient" id="Gradient_yfrcy"]
+offsets = PackedFloat32Array(0.996933)
+colors = PackedColorArray(0.0392157, 0.0392157, 0.0392157, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_86skw"]
+gradient = SubResource("Gradient_yfrcy")
+width = 700
+height = 700
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pr4m8"]
 size = Vector3(7, 0, 7)
@@ -29,6 +39,18 @@ transform = Transform3D(0.997791, 0, 0, 0, 0.997791, 0, 0, 0, 0.997791, 0, 1, 0)
 shape = SubResource("BoxShape3D_oxdqs")
 disabled = true
 
+[node name="Glyph" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 4, 0)
+layers = 3
+texture = SubResource("GradientTexture2D_86skw")
+
+[node name="Sigil" type="Label3D" parent="Glyph"]
+transform = Transform3D(4.37114e-08, -1, -8.74228e-08, -1, -4.37114e-08, 0, -3.82137e-15, 8.74228e-08, -1, 0, -1.42109e-14, -0.0190001)
+text = "name
+"
+font = ExtResource("2_bmflw")
+outline_size = 0
+
 [node name="Floor" type="StaticBody3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
@@ -45,6 +67,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 shape = SubResource("BoxShape3D_pr4m8")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ceiling"]
+layers = 3
 mesh = SubResource("BoxMesh_2kb55")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Ceiling"]
