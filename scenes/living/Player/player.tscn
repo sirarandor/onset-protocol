@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://hml01fgl3xwy"]
+[gd_scene load_steps=24 format=3 uid="uid://hml01fgl3xwy"]
 
 [ext_resource type="Script" path="res://source/player/player_char.gd" id="1_o2fjf"]
 [ext_resource type="AudioStream" uid="uid://gayqvmsvugod" path="res://content/audio/player/footstep-1-83098.mp3" id="2_o12bw"]
@@ -180,9 +180,12 @@ auto_exposure_max_exposure_value = 16.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ssydo"]
 shader = ExtResource("6_xyi7t")
 
-[sub_resource type="CodeHighlighter" id="CodeHighlighter_mn83j"]
-
 [sub_resource type="GDScript" id="GDScript_l8b7r"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_yx1a0"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_mn83j"]
 
 [sub_resource type="Environment" id="Environment_m76vd"]
 glow_enabled = true
@@ -494,12 +497,14 @@ text = "Is this affected by the tingy? "
 
 [node name="Window" type="Window" parent="HUD"]
 mode = 2
+title = "SYSTEM"
 initial_position = 1
 size = Vector2i(1280, 720)
 exclusive = true
 unresizable = true
-mouse_passthrough = true
+content_scale_mode = 1
 theme = ExtResource("5_5ex1g")
+theme_override_colors/title_color = Color(0, 0, 0, 1)
 script = ExtResource("7_wkwfq")
 
 [node name="System" type="Control" parent="HUD/Window"]
@@ -510,21 +515,38 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TabContainer" type="TabContainer" parent="HUD/Window/System"]
+[node name="Monitor" type="Control" parent="HUD/Window/System"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("5_5ex1g")
-tab_alignment = 1
+script = SubResource("GDScript_l8b7r")
 
-[node name="[ Terminal ]" type="Control" parent="HUD/Window/System/TabContainer"]
-layout_mode = 2
+[node name="TextureRect" type="TextureRect" parent="HUD/Window/System/Monitor"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -540.0
+offset_top = -360.0
+offset_right = 540.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_yx1a0")
+
+[node name="Terminal" type="Control" parent="HUD/Window/System"]
+anchors_preset = 0
+offset_top = 470.0
+offset_right = 400.0
+offset_bottom = 720.0
 script = ExtResource("8_mn7w6")
 
-[node name="LineEdit" type="LineEdit" parent="HUD/Window/System/TabContainer/[ Terminal ]"]
+[node name="LineEdit" type="LineEdit" parent="HUD/Window/System/Terminal"]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -534,14 +556,15 @@ offset_top = -24.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 16
+text = "4"
 max_length = 64
 
-[node name="TextEdit" type="TextEdit" parent="HUD/Window/System/TabContainer/[ Terminal ]"]
+[node name="TextEdit" type="TextEdit" parent="HUD/Window/System/Terminal"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -24.0
+offset_bottom = -32.0
 grow_horizontal = 2
 grow_vertical = 2
 editable = false
@@ -555,30 +578,15 @@ autowrap_mode = 1
 caret_type = 1
 syntax_highlighter = SubResource("CodeHighlighter_mn83j")
 
-[node name="[ Inventory ]" type="Control" parent="HUD/Window/System/TabContainer"]
-visible = false
-layout_mode = 2
+[node name="Status" type="Control" parent="HUD/Window/System"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="[ Monitor ]" type="Control" parent="HUD/Window/System/TabContainer"]
-visible = false
-layout_mode = 2
-script = SubResource("GDScript_l8b7r")
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2i(1080, 720)
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="HUD/Window/System/TabContainer/[ Monitor ]"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="SubViewport" type="SubViewport" parent="HUD/Window/System/TabContainer/[ Monitor ]/SubViewportContainer"]
-handle_input_locally = false
-size = Vector2i(1280, 720)
-size_2d_override_stretch = true
-render_target_update_mode = 0
-
-[node name="ThirdPerson" type="Camera3D" parent="HUD/Window/System/TabContainer/[ Monitor ]/SubViewportContainer/SubViewport"]
+[node name="ThirdPerson" type="Camera3D" parent="SubViewport"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 8, 0)
 cull_mask = 1048574
 environment = SubResource("Environment_m76vd")

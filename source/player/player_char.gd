@@ -14,7 +14,7 @@ var rng = RandomNumberGenerator
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready():
-	cam = $"HUD/Window/System/TabContainer/[ Monitor ]/SubViewportContainer/SubViewport/ThirdPerson"
+	cam = $SubViewport/ThirdPerson
 	#$HUD/System.visible = false;
 	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
