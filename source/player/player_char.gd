@@ -9,6 +9,7 @@ var camera_anglev = 0
 var cam
 var camh = 8
 var rng = RandomNumberGenerator
+var in_system
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -44,7 +45,7 @@ func _physics_process(delta):
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
+	if direction and !in_system:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
 		$AnimationPlayer.play("player/p_walking")
@@ -68,15 +69,19 @@ func _physics_process(delta):
 	move_and_slide()
 
 func _input(event):
-	if event.is_action_pressed("onset_showsystem"):
-		if $HUD/Window.visible:
-			$HUD/Window.hide()
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-		else:
-			Input.mouse_mode = Input.MOUSE_MODE_CONFINED
-			$HUD/Window.show()
+		
+	if event.is_action_pressed("onset_showsystem") and !$HUD/Window.visible:
+		Input.mouse_mode = Input.MOUSE_MODE_CONFINED
+		$HUD/Window.show()
+		in_system = true
+	else:
+		$HUD/Window.hide()
+		
+	if !$HUD/Window.visible:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		in_system = false
 	
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and !in_system:
 		self.rotate_y(deg_to_rad(-event.relative.x*mouse_sens))
 		$FirstPerson.rotate_x(deg_to_rad(-event.relative.y*mouse_sens))
 		

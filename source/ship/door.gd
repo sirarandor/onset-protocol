@@ -36,9 +36,9 @@ func _ready():
 
 	$Sliding/Glyph/Sigil.text = name
 	
-	state = "closed"
-	$AnimationPlayer.play("door_close")
-	$Sliding/Glyph.modulate = Color(100,0,0)
+	state = "open"
+	$AnimationPlayer.play("door_open")
+	$Sliding/Glyph.modulate = Color(0,100,0)
 	
 #unc _process(delta):
 	#emit_signal("open_door")
