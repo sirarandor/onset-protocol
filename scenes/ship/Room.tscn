@@ -1,8 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://1gvtja2ip210"]
+[gd_scene load_steps=13 format=3 uid="uid://1gvtja2ip210"]
 
 [ext_resource type="Script" path="res://source/ship/room.gd" id="1_l4y7s"]
 [ext_resource type="Material" uid="uid://bna77f7342pk2" path="res://rendering/materials/debug/wall.tres" id="2_3m3yw"]
 [ext_resource type="FontFile" uid="uid://li877s3ntbxt" path="res://content/fonts/Mx437_DOS-V_re_ANK16.ttf" id="2_bmflw"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_8gmo3"]
+sample_partition_type = 2
+geometry_parsed_geometry_type = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_oxdqs"]
 size = Vector3(7, 2, 7)
@@ -19,9 +23,6 @@ height = 700
 [sub_resource type="BoxShape3D" id="BoxShape3D_pr4m8"]
 size = Vector3(7, 0, 7)
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_3f4da"]
-size = Vector2(7, 7)
-
 [sub_resource type="BoxMesh" id="BoxMesh_2kb55"]
 size = Vector3(7, 0.25, 7)
 
@@ -31,8 +32,14 @@ size = Vector3(0, 3, 3)
 [sub_resource type="BoxMesh" id="BoxMesh_nl5f6"]
 size = Vector3(0.25, 3, 3)
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_3f4da"]
+size = Vector2(7, 7)
+
 [node name="Room" type="StaticBody3D"]
 script = ExtResource("1_l4y7s")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_8gmo3")
 
 [node name="Detector" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.997791, 0, 0, 0, 0.997791, 0, 0, 0, 0.997791, 0, 1, 0)
@@ -45,20 +52,23 @@ layers = 3
 texture = SubResource("GradientTexture2D_86skw")
 
 [node name="Sigil" type="Label3D" parent="Glyph"]
-transform = Transform3D(4.37114e-08, -1, -8.74228e-08, -1, -4.37114e-08, 0, -3.82137e-15, 8.74228e-08, -1, 0, -1.42109e-14, -0.0190001)
+transform = Transform3D(1, -8.74228e-08, -8.74228e-08, -8.74228e-08, -1, 0, -8.74228e-08, 7.64274e-15, -1, 0, -1.42109e-14, -0.0190001)
+layers = 3
 text = "name
 "
 font = ExtResource("2_bmflw")
+font_size = 128
 outline_size = 0
 
-[node name="Floor" type="StaticBody3D" parent="."]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
-shape = SubResource("BoxShape3D_pr4m8")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+[node name="Sigil2" type="Label3D" parent="Glyph"]
+transform = Transform3D(1, -8.74228e-08, -8.74228e-08, -8.74228e-08, -1, 0, -8.74228e-08, 7.10543e-15, -1, 0, 0.5, -0.0190001)
 layers = 3
-mesh = SubResource("PlaneMesh_3f4da")
+modulate = Color(1, 1, 0, 1)
+text = "type
+"
+font = ExtResource("2_bmflw")
+font_size = 96
+outline_size = 0
 
 [node name="Ceiling" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
@@ -72,7 +82,7 @@ mesh = SubResource("BoxMesh_2kb55")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Ceiling"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
-light_color = Color(0.901961, 1, 1, 1)
+light_color = Color(0.960784, 1, 1, 1)
 light_energy = 0.25
 light_volumetric_fog_energy = 0.0
 shadow_enabled = true
@@ -168,3 +178,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 layers = 3
 material_override = ExtResource("2_3m3yw")
 mesh = SubResource("BoxMesh_nl5f6")
+
+[node name="Props" type="Node3D" parent="."]
+
+[node name="Holder_StationOxygen" type="Node3D" parent="Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3, 1.5, -2.15)
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_pr4m8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+layers = 3
+mesh = SubResource("PlaneMesh_3f4da")

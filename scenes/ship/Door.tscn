@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cf17jkxwqvvj2"]
+[gd_scene load_steps=19 format=3 uid="uid://cf17jkxwqvvj2"]
 
 [ext_resource type="Script" path="res://source/ship/door.gd" id="1_s8jpy"]
 [ext_resource type="AudioStream" uid="uid://c4q7x0vr1do0p" path="res://content/audio/door/heavy-mechancial-door-open-6934.mp3" id="2_xolqg"]
@@ -62,6 +62,12 @@ size = Vector3(1, 0, 2)
 
 [sub_resource type="BoxMesh" id="BoxMesh_fh4m3"]
 size = Vector3(1, 0, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wtirt"]
+size = Vector3(1, 3, 2)
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_eh1g1"]
+geometry_parsed_geometry_type = 2
 
 [node name="Door" type="Node3D"]
 script = ExtResource("1_s8jpy")
@@ -145,3 +151,18 @@ skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling"]
 shape = SubResource("BoxShape3D_3m1n1")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 15.0
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_wtirt")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_eh1g1")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

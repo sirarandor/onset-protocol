@@ -11,6 +11,22 @@ var camh = 8
 var rng = RandomNumberGenerator
 var in_system
 
+var inter_cast
+var inter_name
+
+var stat_act
+var stat_up 
+@export
+var stat_oxy = 100
+var stat_oxy_m = 100
+@export
+var stat_bat = 100
+var stat_bat_m = 100
+
+
+
+
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -22,11 +38,25 @@ func _ready():
 	
 	rng = RandomNumberGenerator.new()
 	
+	stat_up = $StatusUpdater
+	stat_up.timeout.connect(_status_update)
+
+	_status_update()
+	
 func _process(delta):
 		cam.position = position
 		cam.position.y = position.y + camh
-		$HUD/debug/fps.text = "FPS: " + str(Engine.get_frames_per_second()) + "\n" + "POS: " + str(self.position)
-	
+		$HUD/debug/fps.text = str(Engine.get_frames_per_second())
+		
+		inter_cast = $FirstPerson/Interact.get_collider()
+		if inter_cast:
+			$HUD/Cursor.text = "[" + inter_cast.get("name") + "]"
+			inter_name = inter_cast.get("name")
+		else:
+			$HUD/Cursor.text = ""
+			inter_name = ""
+			
+		
 func _physics_process(delta):
 	# Add the gravity.
 	#if not is_on_floor():
@@ -76,7 +106,6 @@ func _input(event):
 		in_system = true
 	else:
 		$HUD/Window.hide()
-		
 	if !$HUD/Window.visible:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		in_system = false
@@ -84,5 +113,31 @@ func _input(event):
 	if event is InputEventMouseMotion and !in_system:
 		self.rotate_y(deg_to_rad(-event.relative.x*mouse_sens))
 		$FirstPerson.rotate_x(deg_to_rad(-event.relative.y*mouse_sens))
+	
+	if event.is_action_pressed("onset_throw"):
+		pass
+	
+	if event.is_action_pressed("onset_interact"):
+		if inter_name == "Oxygen Station":
+			stat_act = "filling_o2"
+	if event.is_action_released("onset_interact"):
+		stat_act = ""
+
+
+func _status_update():
+	if stat_act == "filling_o2" and stat_oxy < stat_oxy_m:
+		stat_oxy += 1
+		$HUD/Cursor/Info.text = str(stat_oxy).pad_decimals(0)
+		#$Sounds/OxygenFilling.play()
+	else:
+		stat_oxy -= 0.1
+	
+	if stat_act == "":
+		$HUD/Cursor/Info.text = ""
 		
+	if stat_oxy == 0: 
+		get_tree().quit()
+	
+	$HUD/Window/System/Status/Label/Oxygen.value = stat_oxy
+	stat_up.start()
 	pass

@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://drpmq1sagsbql"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ns0an"]
+radius = 0.002
+height = 0.05
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8i334"]
+radius = 0.002
+height = 0.05
+
+[node name="Glowstick" type="Node3D"]
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
+mesh = SubResource("CapsuleMesh_ns0an")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CapsuleShape3D_8i334")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_color = Color(1, 1, 0.52549, 1)

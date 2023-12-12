@@ -1,20 +1,29 @@
-[gd_scene load_steps=24 format=3 uid="uid://hml01fgl3xwy"]
+[gd_scene load_steps=29 format=3 uid="uid://hml01fgl3xwy"]
 
 [ext_resource type="Script" path="res://source/player/player_char.gd" id="1_o2fjf"]
 [ext_resource type="AudioStream" uid="uid://gayqvmsvugod" path="res://content/audio/player/footstep-1-83098.mp3" id="2_o12bw"]
+[ext_resource type="Texture2D" uid="uid://1m4h62b0f2vc" path="res://content/textures/system/icons8-triangle-96.png" id="2_spv4v"]
+[ext_resource type="AudioStream" uid="uid://bxj5nqem0yr1c" path="res://content/audio/player/system/computer-processing-sound-effects-short-click-select-02-122133.mp3" id="3_o012p"]
 [ext_resource type="Texture2D" uid="uid://c42iv5c4o1yw0" path="res://content/imports/scientist-updated/this_man_css_template5.png" id="3_tx24v"]
+[ext_resource type="AudioStream" uid="uid://k0ox8vgwwfg" path="res://content/audio/player/system/slips-air-release-v1-107120.mp3" id="4_kjt08"]
+[ext_resource type="AudioStream" uid="uid://cuahy056m5103" path="res://content/audio/player/system/mech-keyboard-02-102918.mp3" id="4_l8abd"]
 [ext_resource type="Texture2D" uid="uid://crvt5t55awdkm" path="res://content/textures/flashlight.jpg" id="4_uyph4"]
 [ext_resource type="Theme" uid="uid://c6o0jrhk2ue8o" path="res://content/base.tres" id="5_5ex1g"]
 [ext_resource type="Shader" path="res://rendering/shaders/screen/static.gdshader" id="6_xyi7t"]
 [ext_resource type="Script" path="res://source/player/HUD/system.gd" id="7_wkwfq"]
-[ext_resource type="Script" path="res://source/player/HUD/terminal.gd" id="8_mn7w6"]
+[ext_resource type="Texture2D" uid="uid://c1dw2ss77bcx6" path="res://content/textures/system/qHctTZt.png" id="9_7pted"]
+[ext_resource type="Texture2D" uid="uid://4oqfhv1xvev" path="res://content/textures/system/point_scan_FILL0_wght400_GRAD0_opsz24.png" id="11_vmf6d"]
+[ext_resource type="FontFile" uid="uid://li877s3ntbxt" path="res://content/fonts/Mx437_DOS-V_re_ANK16.ttf" id="13_pqkti"]
 
-[sub_resource type="Gradient" id="Gradient_v1ctx"]
-offsets = PackedFloat32Array(1)
-colors = PackedColorArray(1, 1, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_f56lx"]
-gradient = SubResource("Gradient_v1ctx")
+[sub_resource type="Animation" id="Animation_h5sih"]
+resource_name = "p_holding"
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Rig/metarig/Skeleton3D")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(-0.2, 1, 0, 0, 0)
 
 [sub_resource type="Animation" id="Animation_v5nex"]
 resource_name = "p_walking"
@@ -41,6 +50,7 @@ tracks/1/use_blend = true
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5vuyk"]
 _data = {
+"p_holding": SubResource("Animation_h5sih"),
 "p_walking": SubResource("Animation_v5nex")
 }
 
@@ -173,7 +183,7 @@ volumetric_fog_albedo = Color(0, 0, 0, 1)
 [sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_8hia2"]
 auto_exposure_enabled = true
 auto_exposure_speed = 4.0
-frustum_focal_length = 12.0
+frustum_focal_length = 16.0
 auto_exposure_min_exposure_value = 0.0
 auto_exposure_max_exposure_value = 16.0
 
@@ -196,14 +206,18 @@ collision_layer = 3
 script = ExtResource("1_o2fjf")
 
 [node name="Glyph" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.0221813, 0.999754, 0, -0.999754, -0.0221813, 0, 4, -0.031)
+transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 0, 4, -0.031)
 layers = 2
-texture = SubResource("GradientTexture2D_f56lx")
+texture = ExtResource("2_spv4v")
 
 [node name="Sounds" type="Node3D" parent="."]
 
 [node name="Footstep" type="AudioStreamPlayer3D" parent="Sounds"]
 stream = ExtResource("2_o12bw")
+
+[node name="OxygenFilling" type="AudioStreamPlayer3D" parent="Sounds"]
+stream = ExtResource("4_kjt08")
+volume_db = -8.0
 
 [node name="AudioListener3D" type="AudioListener3D" parent="."]
 current = true
@@ -228,6 +242,9 @@ transform = Transform3D(-0.4, 0, -3.49691e-08, 0, 0.4, 0, 3.49691e-08, 0, -0.4, 
 
 [node name="metarig" type="Node3D" parent="Rig"]
 transform = Transform3D(2.31824, 0, 0, 0, 2.31824, 0, 0, 0, 2.31824, 0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Rig/metarig"]
+root_node = NodePath("../Skeleton3D")
 
 [node name="Skeleton3D" type="Skeleton3D" parent="Rig/metarig"]
 bones/0/name = "spine"
@@ -263,7 +280,7 @@ bones/4/parent = 3
 bones/4/rest = Transform3D(1, 0, 0, 0, 0.918604, -0.39518, 0, 0.39518, 0.918604, 0, 0.192578, -9.31323e-10)
 bones/4/enabled = true
 bones/4/position = Vector3(0, 0.192578, -9.31323e-10)
-bones/4/rotation = Quaternion(0.201738, 0, 0, 0.97944)
+bones/4/rotation = Quaternion(0.201475, 0.000474975, 0.000474975, 0.979475)
 bones/4/scale = Vector3(1, 1, 1)
 bones/5/name = "spine.005"
 bones/5/parent = 4
@@ -459,6 +476,14 @@ spot_range = 16.0
 spot_angle = 30.0
 spot_angle_attenuation = 0.05
 
+[node name="Interact" type="RayCast3D" parent="FirstPerson"]
+target_position = Vector3(0, 0, -2)
+collision_mask = 8
+collide_with_areas = true
+
+[node name="StatusUpdater" type="Timer" parent="."]
+wait_time = 0.25
+
 [node name="HUD" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
@@ -479,28 +504,49 @@ grow_vertical = 2
 [node name="Static" type="ColorRect" parent="HUD/Screen"]
 material = SubResource("ShaderMaterial_ssydo")
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -640.0
+offset_top = -360.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(2, 2)
+
+[node name="TextureRect" type="TextureRect" parent="HUD/Screen"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -640.0
+offset_top = -360.0
+offset_right = 640.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_7pted")
 
 [node name="debug" type="Container" parent="HUD"]
-layout_mode = 0
+layout_mode = 1
 offset_right = 212.0
 offset_bottom = 194.0
 theme = ExtResource("5_5ex1g")
 
 [node name="fps" type="Label" parent="HUD/debug"]
 layout_mode = 2
-text = "Is this affected by the tingy? "
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 10
 
 [node name="Window" type="Window" parent="HUD"]
 mode = 2
 title = "SYSTEM"
 initial_position = 1
 size = Vector2i(1280, 720)
-visible = false
 exclusive = true
 unresizable = true
 content_scale_mode = 1
@@ -545,7 +591,6 @@ anchors_preset = 0
 offset_top = 470.0
 offset_right = 400.0
 offset_bottom = 720.0
-script = ExtResource("8_mn7w6")
 
 [node name="LineEdit" type="LineEdit" parent="HUD/Window/System/Terminal"]
 layout_mode = 1
@@ -575,14 +620,117 @@ deselect_on_focus_loss_enabled = false
 drag_and_drop_selection_enabled = false
 virtual_keyboard_enabled = false
 wrap_mode = 1
-autowrap_mode = 1
+autowrap_mode = 2
 caret_type = 1
 syntax_highlighter = SubResource("CodeHighlighter_mn83j")
 
+[node name="TerminalKeyboard" type="AudioStreamPlayer3D" parent="HUD/Window/System/Terminal"]
+stream = ExtResource("4_l8abd")
+
 [node name="Status" type="Control" parent="HUD/Window/System"]
+layout_mode = 1
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="HUD/Window/System/Status"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.875
+text = "[ OXYGEN ]"
+
+[node name="Oxygen" type="ProgressBar" parent="HUD/Window/System/Status/Label"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -49.0
+offset_top = 24.0
+offset_right = 251.0
+offset_bottom = 44.0
+grow_horizontal = 2
+show_percentage = false
+
+[node name="Label2" type="Label" parent="HUD/Window/System/Status"]
+layout_mode = 0
+offset_top = 48.0
+offset_right = 108.0
+offset_bottom = 72.0
+text = "[ BATTERY ]"
+
+[node name="Oxygen2" type="ProgressBar" parent="HUD/Window/System/Status/Label2"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -54.0
+offset_top = 24.0
+offset_right = 246.0
+offset_bottom = 44.0
+grow_horizontal = 2
+show_percentage = false
+
+[node name="Sounds" type="Node" parent="HUD/Window/System"]
+
+[node name="SystemToggle" type="AudioStreamPlayer3D" parent="HUD/Window/System"]
+stream = ExtResource("3_o012p")
+volume_db = -4.0
+
+[node name="StatusUpdater" type="Timer" parent="HUD/Window/System"]
+
+[node name="Cursor" type="Label" parent="HUD"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = 20.0
+offset_right = 20.0
+offset_bottom = 54.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("13_pqkti")
+theme_override_font_sizes/font_size = 16
+text = "[test]"
+horizontal_alignment = 1
+
+[node name="Info" type="Label" parent="HUD/Cursor"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -10.0
+offset_right = 20.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_fonts/font = ExtResource("13_pqkti")
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HUD"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 12.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_vmf6d")
+stretch_mode = 2
 
 [node name="SubViewport" type="SubViewport" parent="."]
 size = Vector2i(1280, 720)

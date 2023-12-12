@@ -14,6 +14,11 @@ var RoomScene
 var DoorScene
 var BlockScene
 
+#Room type dictionaries
+var rtd_n = ["Communications", "Navigation", "Enviromental", "Reactor", "Engine", "Security"]
+var rtd_s = ["Storage", "Breaker", "Cabin"]
+var rtd_b = ["Oxygen", "", "", "", "", "", "", "", "", ""]
+
 #Rooms and Doors counter
 
 
@@ -153,15 +158,24 @@ func gen_bsl(rx, ry):
 		if s_td[c] == 3: 
 			var b = BlockScene.instantiate()
 			b.position = Vector3(c.x, 1.5, c.y)
-			add_child(b)
+			$Doors.add_child(b)
 			#print("Added a block ",c)
 		if s_td[c] == 5: 
 			var b = BlockScene.instantiate()
 			b.rotation_degrees = Vector3(0,90,0)
 			b.position = Vector3(c.x, 1.5, c.y)
-			add_child(b)
+			$Doors.add_child(b)
 			#print("Added a block ",c)
-
+	
+	#Create a list of the rooms in a random order
+	var rtg
+	for c in ac: 
+		var gns = "Rooms/r" + str(c)
+		get_node(gns).rt = rtd_b.pick_random()
+		#Tell the room to set itself up after we give it it's type
+		get_node(gns).emit_signal("r_setup")
+		pass 
+		
 		
 	
 	
@@ -193,7 +207,7 @@ func gen_rsg(p : Vector2, rx, ry):
 	if rc == SHIP_ROOMS:
 		return
 	else:
-		rc += 1 
+		rc += 1
 	
 	
 	# the vector2 "p" is considered the center point in the room, with everything being offset from that 

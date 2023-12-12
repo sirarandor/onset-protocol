@@ -21,6 +21,7 @@ func _toggle_door():
 		$AnimationPlayer.play("door_close")
 		$AudioStreamPlayer3D.play()
 		$Sliding/Glyph.modulate = Color(100,0,0)
+		$Timer.start()
 		state = "closed"
 	elif state == "closed":
 		$AnimationPlayer.play("door_open")
@@ -35,12 +36,16 @@ func _ready():
 	connect("toggle_door", _toggle_door)
 
 	$Sliding/Glyph/Sigil.text = name
+	$Area3D.name = name
 	
 	state = "open"
 	$AnimationPlayer.play("door_open")
 	$Sliding/Glyph.modulate = Color(0,100,0)
 	
 #unc _process(delta):
-	#emit_signal("open_door")
-	
+	#emit_signal("open_door"
 
+func _on_timer_timeout():
+	if state == "closed": 
+		_toggle_door()
+	pass # Replace with function body.
