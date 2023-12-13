@@ -652,6 +652,7 @@ grow_horizontal = 2
 show_percentage = false
 
 [node name="Label2" type="Label" parent="HUD/Window/System/Status"]
+visible = false
 layout_mode = 0
 offset_top = 48.0
 offset_right = 108.0

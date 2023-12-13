@@ -11,9 +11,8 @@ func _ready():
 	$NavigationAgent3D.target_desired_distance = 0
 	
 	$Sounds/Timer.connect("timeout", _on_soundtimer)
-	$Sounds/Timer.start()
+	#$Sounds/Timer.start()
 	
-	rng = RandomNumberGenerator.new()
 func nav_setup():
 	await get_tree().physics_frame
 	

@@ -23,6 +23,7 @@ script = ExtResource("2_iu4fa")
 
 [node name="Intruder" parent="Ship" instance=ExtResource("5_s16vy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0)
+visible = false
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_2x85d")
