@@ -17,7 +17,7 @@ var BlockScene
 #Room type dictionaries
 var rtd_n = ["Communications", "Navigation", "Enviromental", "Reactor", "Engine", "Security"]
 var rtd_s = ["Storage", "Breaker", "Cabin"]
-var rtd_b = ["Oxygen", "", "", "", "", "", "", "", "", ""]
+var rtd_b = ["Oxygen", "Recharge", "", "", "", "", "", "", "", ""]
 
 #Rooms and Doors counter
 
@@ -81,7 +81,7 @@ func gen_bsl(rx, ry):
 			if s_td[Vector2(p.x, p.y-(rx/2)-1)] != 4:
 				s_td[Vector2(p.x, p.y-(rx/2)-1)] = 5
 			
-			#Check to see if there is already a room where we are
+			#Check to see if there is already a room where we are, if not, add a room.
 			if s_td[p] == 1:
 				pass
 			else:
@@ -90,51 +90,28 @@ func gen_bsl(rx, ry):
 				r.position = Vector3(p.x,0,p.y)
 				r.name = "r" + str(ac)
 				$Rooms.add_child(r)
+				Data.gs_d[r.name] = p
+				Data.rs_d[p] = r.name
+				Data.gs_a.push_back(r.name)
 				ac += 1
 			
 			#Pick a new direction to go to, make sure it isn't backwards. Also add a door to where we want to go.
 			var l = d[rng.randi_range(0,2)]
 			match l: 
 				1:
-					#var dr = DoorScene.instantiate() 
-					#dr.position = Vector3(p.x+(rx/2)+1, 1.5, p.y)
-					#add_child(dr)
-					
-					#s_td.erase(Vector2(p.x+(rx/2)+1, p.y))
 					s_td[Vector2(p.x+(rx/2)+1, p.y)] = 2
-					
 					p.x += rx+1
 					d = [1,3,4]
 				2:
-					#var dr = DoorScene.instantiate() 
-					#dr.position = Vector3(p.x-(rx/2)-1, 1.5, p.y)
-					#add_child(dr)
-					
-					#s_td.erase(Vector2(p.x-(rx/2)-1, p.y))
 					s_td[Vector2(p.x-(rx/2)-1, p.y)] = 2
-					
 					p.x -= 1+rx
 					d = [2,3,4]
 				3:
-					#var dr = DoorScene.instantiate() 
-					#dr.position = Vector3(p.x, 1.5, p.y+(rx/2)+1)
-					#dr.rotation_degrees = Vector3(0,90,0)
-					#add_child(dr)
-					
-					#s_td.erase(Vector2(p.x, p.y+(rx/2)+1))
 					s_td[Vector2(p.x, p.y+(rx/2)+1)] = 4
-					
 					p.y += 1+rx
 					d = [1,2,3]
 				4:
-					#var dr = DoorScene.instantiate() 
-					#dr.position = Vector3(p.x, 1.5, p.y-(rx/2)-1)
-					#dr.rotation_degrees = Vector3(0,90,0)
-					#add_child(dr)
-					
-					#s_td.erase(Vector2(p.x, p.y-(rx/2)-1))
 					s_td[Vector2(p.x, p.y-(rx/2)-1)] = 4
-					
 					p.y -= 1+rx
 					d = [1,2,4]
 	print("Generated ", ac, " of ", SHIP_ROOMS, " rooms.")
@@ -167,16 +144,19 @@ func gen_bsl(rx, ry):
 			$Doors.add_child(b)
 			#print("Added a block ",c)
 	
-	#Create a list of the rooms in a random order
-	var rtg
+	#Randomly give room an oxygen station
 	for c in ac: 
 		var gns = "Rooms/r" + str(c)
 		get_node(gns).rt = rtd_b.pick_random()
 		#Tell the room to set itself up after we give it it's type
 		get_node(gns).emit_signal("r_setup")
 		pass 
-		
-		
+	
+	#Randomly place the Intruder in the ship
+	var intruder = ResourceLoader.load("res://scenes/living/Intruder.tscn").instantiate()
+	intruder.position = get_node("Rooms/" + Data.gs_a.pick_random()).position
+	add_child(intruder)
+	
 	
 	
 	

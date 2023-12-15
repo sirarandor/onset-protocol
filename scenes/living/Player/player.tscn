@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://hml01fgl3xwy"]
+[gd_scene load_steps=35 format=3 uid="uid://hml01fgl3xwy"]
 
 [ext_resource type="Script" path="res://source/player/player_char.gd" id="1_o2fjf"]
 [ext_resource type="AudioStream" uid="uid://gayqvmsvugod" path="res://content/audio/player/footstep-1-83098.mp3" id="2_o12bw"]
@@ -9,9 +9,14 @@
 [ext_resource type="AudioStream" uid="uid://cuahy056m5103" path="res://content/audio/player/system/mech-keyboard-02-102918.mp3" id="4_l8abd"]
 [ext_resource type="Texture2D" uid="uid://crvt5t55awdkm" path="res://content/textures/flashlight.jpg" id="4_uyph4"]
 [ext_resource type="Theme" uid="uid://c6o0jrhk2ue8o" path="res://content/base.tres" id="5_5ex1g"]
+[ext_resource type="AudioStream" uid="uid://bejm5rc5p6rhv" path="res://content/audio/player/bone-crack-121580.mp3" id="5_xl7dy"]
+[ext_resource type="AudioStream" uid="uid://d3gy4wapg00sk" path="res://content/audio/player/ambient/air.mp3" id="6_vg3ol"]
 [ext_resource type="Shader" path="res://rendering/shaders/screen/static.gdshader" id="6_xyi7t"]
+[ext_resource type="AudioStream" uid="uid://4is4m140rutj" path="res://content/audio/player/ambient/clunking1.mp3" id="7_q4cm6"]
 [ext_resource type="Script" path="res://source/player/HUD/system.gd" id="7_wkwfq"]
+[ext_resource type="AudioStream" uid="uid://de30a5hhruaix" path="res://content/audio/player/ambient/clunking2.mp3" id="8_fyy48"]
 [ext_resource type="Texture2D" uid="uid://c1dw2ss77bcx6" path="res://content/textures/system/qHctTZt.png" id="9_7pted"]
+[ext_resource type="AudioStream" uid="uid://xp7qg7tvqvre" path="res://content/audio/player/ambient/clunking3.mp3" id="9_tcg1v"]
 [ext_resource type="Texture2D" uid="uid://4oqfhv1xvev" path="res://content/textures/system/point_scan_FILL0_wght400_GRAD0_opsz24.png" id="11_vmf6d"]
 [ext_resource type="FontFile" uid="uid://li877s3ntbxt" path="res://content/fonts/Mx437_DOS-V_re_ANK16.ttf" id="13_pqkti"]
 
@@ -201,12 +206,16 @@ viewport_path = NodePath("SubViewport")
 glow_enabled = true
 fog_light_color = Color(1, 1, 1, 1)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_ho0xq"]
+size = Vector3(0.75, 1, 0.75)
+
 [node name="Player" type="CharacterBody3D"]
-collision_layer = 3
+collision_layer = 19
+collision_mask = 17
 script = ExtResource("1_o2fjf")
 
 [node name="Glyph" type="Sprite3D" parent="."]
-transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 0, 4, -0.031)
+transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 0, 4.5, -0.031)
 layers = 2
 texture = ExtResource("2_spv4v")
 
@@ -218,6 +227,32 @@ stream = ExtResource("2_o12bw")
 [node name="OxygenFilling" type="AudioStreamPlayer3D" parent="Sounds"]
 stream = ExtResource("4_kjt08")
 volume_db = -8.0
+
+[node name="Death" type="AudioStreamPlayer3D" parent="Sounds"]
+stream = ExtResource("5_xl7dy")
+
+[node name="Ambient" type="Node3D" parent="Sounds"]
+
+[node name="Timer" type="Timer" parent="Sounds/Ambient"]
+
+[node name="Air" type="AudioStreamPlayer3D" parent="Sounds/Ambient"]
+stream = ExtResource("6_vg3ol")
+volume_db = -2.0
+autoplay = true
+
+[node name="Clunker" type="Node3D" parent="Sounds/Ambient"]
+
+[node name="Clunking1" type="AudioStreamPlayer3D" parent="Sounds/Ambient/Clunker"]
+stream = ExtResource("7_q4cm6")
+volume_db = 5.0
+
+[node name="Clunking2" type="AudioStreamPlayer3D" parent="Sounds/Ambient/Clunker"]
+stream = ExtResource("8_fyy48")
+volume_db = 5.0
+
+[node name="Clunking3" type="AudioStreamPlayer3D" parent="Sounds/Ambient/Clunker"]
+stream = ExtResource("9_tcg1v")
+volume_db = 5.0
 
 [node name="AudioListener3D" type="AudioListener3D" parent="."]
 current = true
@@ -472,7 +507,7 @@ light_energy = 0.5
 light_indirect_energy = 0.0
 light_projector = ExtResource("4_uyph4")
 shadow_enabled = true
-spot_range = 16.0
+spot_range = 32.0
 spot_angle = 30.0
 spot_angle_attenuation = 0.05
 
@@ -530,17 +565,6 @@ offset_bottom = 360.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("9_7pted")
-
-[node name="debug" type="Container" parent="HUD"]
-layout_mode = 1
-offset_right = 212.0
-offset_bottom = 194.0
-theme = ExtResource("5_5ex1g")
-
-[node name="fps" type="Label" parent="HUD/debug"]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 0, 1)
-theme_override_font_sizes/font_size = 10
 
 [node name="Window" type="Window" parent="HUD"]
 mode = 2
@@ -652,14 +676,13 @@ grow_horizontal = 2
 show_percentage = false
 
 [node name="Label2" type="Label" parent="HUD/Window/System/Status"]
-visible = false
 layout_mode = 0
 offset_top = 48.0
 offset_right = 108.0
 offset_bottom = 72.0
 text = "[ BATTERY ]"
 
-[node name="Oxygen2" type="ProgressBar" parent="HUD/Window/System/Status/Label2"]
+[node name="Battery" type="ProgressBar" parent="HUD/Window/System/Status/Label2"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -733,6 +756,38 @@ grow_vertical = 2
 texture = ExtResource("11_vmf6d")
 stretch_mode = 2
 
+[node name="debug" type="VBoxContainer" parent="HUD"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="fps" type="Label" parent="HUD/debug"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="pos" type="Label" parent="HUD/debug"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="room" type="Label" parent="HUD/debug"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="intruder_counter" type="Label" parent="HUD/debug"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="sensors" type="Label" parent="HUD/debug"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 16
+
 [node name="SubViewport" type="SubViewport" parent="."]
 size = Vector2i(1280, 720)
 
@@ -743,3 +798,11 @@ environment = SubResource("Environment_m76vd")
 projection = 1
 current = true
 size = 24.0
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_layer = 0
+collision_mask = 128
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_ho0xq")

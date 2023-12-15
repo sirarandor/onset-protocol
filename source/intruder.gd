@@ -2,16 +2,28 @@ extends CharacterBody3D
 
 @onready
 var player = $/root/Main/Game/Ship/Players/Player
+var mvs = 2
+var active = false
+
+signal nav_ur
+
+@export
+var nav_room = "r0"
+
 var rng
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	call_deferred("nav_setup")
-	pass # Replace with function body.
-	$NavigationAgent3D.path_desired_distance = 0.5
-	$NavigationAgent3D.target_desired_distance = 0
-	
 	$Sounds/Timer.connect("timeout", _on_soundtimer)
+	$Active.connect("timeout", _on_activate)
+	
+	nav_ur.connect(_nav_ur)
 	#$Sounds/Timer.start()
+	$Active.start()
+	
+	rng = RandomNumberGenerator.new()
+	
 	
 func nav_setup():
 	await get_tree().physics_frame
@@ -19,28 +31,148 @@ func nav_setup():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	$NavigationAgent3D.set_target_position(player.position)
-	print($NavigationAgent3D.get_next_path_position())
+	pass
 
+
+#Navigation variables
+var nrp = position
+var lp
 func _physics_process(delta):
-	
-	var cap: Vector3 = global_position
-	var npp: Vector3 = $NavigationAgent3D.get_next_path_position()
-	
 	look_at(player.position)
+	#print($Active.time_left)
 	
-	velocity = cap.direction_to(npp) * 3.0
+	if active == true:
+		if lp != position:
+			$Model/AnimationPlayer.play("ArmatureAction")
+		var nr = nav_rdev()
+		if Data.gs_d.has(nr):
+			nrp = Vector3(Data.gs_d[nr].x, 0, Data.gs_d[nr].y)
+		else:
+			print("Could not find a roosssssm position at ", nr)
+		
+		print(position.round())
+		print(nrp)
+		
+		if nrp.x < position.x:
+			velocity.x = -mvs
+			
+		if nrp.x > position.x: 
+			velocity.x = mvs
+			
+		if nrp.z < position.z:
+			velocity.z = -mvs
+			
+		if nrp.z > position.z: 
+			velocity.z = mvs
+	
+	if nav_room == player.nav_room:
+		velocity = (transform.basis * Vector3(0,0,-1).normalized()) * 4.5
+		
+	lp = position
 	move_and_slide()
+
+#Navigation Room Deviation
+#Return the adjacent room that moves us closest to the player, avoiding walls and closed doors. 
+func nav_rdev(): 
+	var player_room_pos   = Data.gs_d[player.nav_room]
+	var intruder_room_pos = Data.gs_d[nav_room]
+	var current_room = get_node("/root/Main/Game/Ship/Rooms/" + nav_room)
+ 	
+	#Obtain the distance from the player's room relative to the intruder's room
+	var deviation_x = player_room_pos.x - intruder_room_pos.x
+	var deviation_y = player_room_pos.y - intruder_room_pos.y
+	
+	#print(deviation_x, " ", deviation_y)
+	
+	var direction_result = Vector2(0,0)
+	var lost = true
+	#Determine which distance is closer
+
+	if deviation_x != 0:
+		#Get the room in the positive X direction
+		if deviation_x > 0 and current_room.sensors["posx"] == false:
+			#print("Intruder going positive X.")
+			direction_result = Vector2(8,0)
+			lost = false
+		#Get the room in the negative X direction
+		else:
+			if deviation_x < 0 and current_room.sensors["negx"] == false:
+				#print("Intruder going negative X.")
+				direction_result = Vector2(-8,0)
+				lost = false
+				
+	if deviation_y != 0:
+		#Get the room in the positive Y direction
+		if deviation_y > 0 and current_room.sensors["posz"] == false:
+			#print("Intruder going positive Y.")
+			direction_result = Vector2(0,8)
+			lost = false
+		#Get the room in the negative Y direction
+		else:
+			if deviation_y < 0 and current_room.sensors["negz"] == false:
+				#print("Intruder going negative Y.")
+				direction_result = Vector2(0,-8)
+				lost = false
+	
+	#if lost == true:
+	#	match rng.randi_range(1,4):
+	#		1: 
+	#			if current_room.sensors["posx"] == false:
+	#				direction_result = Vector2(8,0)
+	#				lost = false
+	#		2: 
+	#			if current_room.sensors["negx"] == false:
+	#				direction_result = Vector2(-8,0)
+	#				lost = false
+	#		3: 
+	#			if current_room.sensors["posz"] == false:
+	#				direction_result = Vector2(0,8)
+	#				lost = false 
+	#		4: 
+	#			if current_room.sensors["negz"] == false:
+	#				direction_result = Vector2(0,-8)
+	#				lost = false
+	
+	#print(direction_result)
+	
+	var next_path_room = "r0"
+	if Data.rs_d.has(intruder_room_pos + direction_result):
+		next_path_room = Data.rs_d[intruder_room_pos + direction_result]
+	else: 
+		print("Failed to find a room to navigate to at ", intruder_room_pos + direction_result, ".")
+	#print(next_path_room)
+	#print(direction_result)
+	
+	return next_path_room
+
 
 func _on_soundtimer():
 	$Sounds/Timer.wait_time = rng.randi_range(32,128)
 	
-	match rng.randi_range(1,3):
-		1: 
-			$Sounds/Seeking1.play()
-		2:
-			$Sounds/Seeking2.play()
-		3: 
-			$Sounds/Seeking3.play()
-	
 	$Sounds/Timer.start()
+
+func _on_activate():
+	$Active.wait_time = rng.randi_range(16,128)
+	if active == true:
+		hide()
+		position.y = -5
+		active = false
+		return
+		
+	if active == false: 
+		var spawn_room = Data.gs_a.pick_random()
+		position = Vector3(Data.gs_d[spawn_room].x, 0, Data.gs_d[spawn_room].y)
+		show()
+		active = true
+		match rng.randi_range(1,3):
+			1: 
+				$Sounds/Seeking1.play()
+			2:
+				$Sounds/Seeking2.play()
+			3: 
+				$Sounds/Seeking3.play()
+		
+
+func _nav_ur(r): 
+	nav_room = r
+	print(nav_rdev())

@@ -85,6 +85,7 @@ max_distance = 50.0
 
 [node name="Sliding" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+collision_layer = 33
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Sliding"]
 shape = SubResource("BoxShape3D_bxwuo")
@@ -97,7 +98,7 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.5
 layers = 3
 texture = SubResource("GradientTexture2D_r8oc3")
 
-[node name="Sigil" type="Label3D" parent="Sliding/Glyph"]
+[node name="Name" type="Label3D" parent="Sliding/Glyph"]
 transform = Transform3D(1.31134e-07, 1, -4.37114e-08, 1, -1.31134e-07, -4.37114e-08, -4.37114e-08, -4.37114e-08, -1, 0, -4.37097e-10, -0.00999975)
 layers = 2
 double_sided = false
@@ -155,11 +156,11 @@ shape = SubResource("BoxShape3D_3m1n1")
 [node name="Timer" type="Timer" parent="."]
 wait_time = 15.0
 
-[node name="Area3D" type="Area3D" parent="."]
-collision_layer = 8
-collision_mask = 8
+[node name="Inside" type="Area3D" parent="."]
+collision_layer = 24
+collision_mask = 0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Inside"]
 shape = SubResource("BoxShape3D_wtirt")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]

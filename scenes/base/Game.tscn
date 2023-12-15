@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://gjbdj6js6vn6"]
+[gd_scene load_steps=5 format=3 uid="uid://gjbdj6js6vn6"]
 
 [ext_resource type="Script" path="res://source/game.gd" id="1_lnwq7"]
 [ext_resource type="Script" path="res://source/ship/ship.gd" id="2_iu4fa"]
 [ext_resource type="PackedScene" uid="uid://hml01fgl3xwy" path="res://scenes/living/Player/player.tscn" id="2_xctpk"]
-[ext_resource type="PackedScene" uid="uid://csi0qhdy054av" path="res://scenes/living/Intruder.tscn" id="5_s16vy"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_2x85d"]
 
@@ -20,10 +19,7 @@ script = ExtResource("2_iu4fa")
 [node name="Players" type="Node" parent="Ship"]
 
 [node name="Player" parent="Ship/Players" instance=ExtResource("2_xctpk")]
-
-[node name="Intruder" parent="Ship" instance=ExtResource("5_s16vy")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0)
-visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_2x85d")

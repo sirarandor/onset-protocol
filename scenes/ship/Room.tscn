@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://1gvtja2ip210"]
+[gd_scene load_steps=14 format=3 uid="uid://1gvtja2ip210"]
 
 [ext_resource type="Script" path="res://source/ship/room.gd" id="1_l4y7s"]
 [ext_resource type="Material" uid="uid://bna77f7342pk2" path="res://rendering/materials/debug/wall.tres" id="2_3m3yw"]
@@ -35,6 +35,9 @@ size = Vector3(0.25, 3, 3)
 [sub_resource type="PlaneMesh" id="PlaneMesh_3f4da"]
 size = Vector2(7, 7)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_mj3hu"]
+size = Vector3(7.5, 3, 7.5)
+
 [node name="Room" type="StaticBody3D"]
 script = ExtResource("1_l4y7s")
 
@@ -51,7 +54,7 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 4, 
 layers = 3
 texture = SubResource("GradientTexture2D_86skw")
 
-[node name="Sigil" type="Label3D" parent="Glyph"]
+[node name="Name" type="Label3D" parent="Glyph"]
 transform = Transform3D(1, -8.74228e-08, -8.74228e-08, -8.74228e-08, -1, 0, -8.74228e-08, 7.64274e-15, -1, 0, -1.42109e-14, -0.0190001)
 layers = 3
 text = "name
@@ -60,7 +63,7 @@ font = ExtResource("2_bmflw")
 font_size = 128
 outline_size = 0
 
-[node name="Sigil2" type="Label3D" parent="Glyph"]
+[node name="Type" type="Label3D" parent="Glyph"]
 transform = Transform3D(1, -8.74228e-08, -8.74228e-08, -8.74228e-08, -1, 0, -8.74228e-08, 7.10543e-15, -1, 0, 0.5, -0.0190001)
 layers = 3
 modulate = Color(1, 1, 0, 1)
@@ -192,3 +195,33 @@ shape = SubResource("BoxShape3D_pr4m8")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
 layers = 3
 mesh = SubResource("PlaneMesh_3f4da")
+
+[node name="Inside" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+collision_layer = 16
+collision_mask = 16
+
+[node name="Collider" type="CollisionShape3D" parent="Inside"]
+shape = SubResource("BoxShape3D_mj3hu")
+
+[node name="Sensors" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="PosZ" type="RayCast3D" parent="Sensors"]
+target_position = Vector3(0, 0, 4)
+collision_mask = 32
+hit_from_inside = true
+hit_back_faces = false
+
+[node name="PosX" type="RayCast3D" parent="Sensors"]
+target_position = Vector3(4, 0, 0)
+collision_mask = 32
+
+[node name="NegZ" type="RayCast3D" parent="Sensors"]
+target_position = Vector3(0, 0, -4)
+collision_mask = 32
+
+[node name="NegX" type="RayCast3D" parent="Sensors"]
+target_position = Vector3(-4, 0, 0)
+collision_mask = 32
+hit_back_faces = false

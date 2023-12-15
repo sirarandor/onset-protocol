@@ -1,24 +1,20 @@
-[gd_scene load_steps=10 format=3 uid="uid://csi0qhdy054av"]
+[gd_scene load_steps=9 format=3 uid="uid://csi0qhdy054av"]
 
 [ext_resource type="Script" path="res://source/intruder.gd" id="1_ydwlh"]
-[ext_resource type="ArrayMesh" uid="uid://bxfex7xnyhg4k" path="res://content/imports/Nintendo 64 - The Legend of Zelda Ocarina of Time - ReDead/redead.obj" id="2_84c4q"]
+[ext_resource type="PackedScene" uid="uid://bte5lj51hq8is" path="res://content/meshes/IntruderModel.tscn" id="2_5n6bu"]
 [ext_resource type="AudioStream" uid="uid://dey4b2qwid3xe" path="res://content/audio/alien/seeking1.mp3" id="3_02mfe"]
+[ext_resource type="Texture2D" uid="uid://b14qlxv8lgne1" path="res://content/textures/intruder/glyph.png" id="3_cv0qb"]
 [ext_resource type="AudioStream" uid="uid://cvvoob0b5fmyc" path="res://content/audio/alien/seeking2.mp3" id="4_gpqk8"]
 [ext_resource type="AudioStream" uid="uid://b4iw5a7f30s87" path="res://content/audio/alien/seeking3.mp3" id="5_gf026"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3nwt7"]
+height = 2.25
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vcc1m"]
-size = Vector3(1, 3, 1)
-
-[sub_resource type="Gradient" id="Gradient_broxy"]
-offsets = PackedFloat32Array(1)
-colors = PackedColorArray(1, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_y83qx"]
-gradient = SubResource("Gradient_broxy")
+size = Vector3(1, 2.5, 1)
 
 [node name="Intruder" type="CharacterBody3D"]
+collision_layer = 17
 script = ExtResource("1_ydwlh")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
@@ -27,26 +23,25 @@ avoidance_enabled = true
 height = 1.5
 use_3d_avoidance = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.015, 0, -1.31134e-09, 0, 0.015, 0, 1.31134e-09, 0, -0.015, 0, 0, 0)
-mesh = ExtResource("2_84c4q")
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 shape = SubResource("CapsuleShape3D_3nwt7")
+
+[node name="Model" parent="." instance=ExtResource("2_5n6bu")]
+transform = Transform3D(-0.015, 0, -1.31134e-09, 0, 0.015, 0, 1.31134e-09, 0, -0.015, 0, 0, 0)
 
 [node name="[ UNKNOWN ]" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-collision_layer = 8
+collision_layer = 152
 collision_mask = 8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="[ UNKNOWN ]"]
 shape = SubResource("BoxShape3D_vcc1m")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 4.52, 0)
+transform = Transform3D(0.75, 0, 0, 0, -3.27835e-08, -0.75, 0, 0.75, -3.27835e-08, 0, 4.52, 0)
 layers = 3
-texture = SubResource("GradientTexture2D_y83qx")
+texture = ExtResource("3_cv0qb")
 
 [node name="Sounds" type="Node3D" parent="."]
 
@@ -60,3 +55,5 @@ stream = ExtResource("4_gpqk8")
 stream = ExtResource("5_gf026")
 
 [node name="Timer" type="Timer" parent="Sounds"]
+
+[node name="Active" type="Timer" parent="."]

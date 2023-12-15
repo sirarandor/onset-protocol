@@ -12,6 +12,8 @@ material = SubResource("StandardMaterial3D_5jfvv")
 size = Vector3(1.25, 3, 2)
 
 [node name="Block" type="StaticBody3D"]
+collision_layer = 33
+collision_mask = 33
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_msskx")

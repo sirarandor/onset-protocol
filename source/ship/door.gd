@@ -35,8 +35,8 @@ func _ready():
 	connect("close_door", _close_door)
 	connect("toggle_door", _toggle_door)
 
-	$Sliding/Glyph/Sigil.text = name
-	$Area3D.name = name
+	$Sliding/Glyph/Name.text = name
+	$Inside.name = name
 	
 	state = "open"
 	$AnimationPlayer.play("door_open")

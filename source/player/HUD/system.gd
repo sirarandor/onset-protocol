@@ -3,11 +3,6 @@ extends Window
 var ship_r
 var ship_d
 
-var stat_up
-var stat_bt
-var stat_o2 = 100
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	ship_r = get_node("/root/Main/Game/Ship/Rooms")
@@ -47,6 +42,7 @@ func term_println(s : String):
 #Toggle a specific door
 func term_tsd(d : String): 
 	if ship_d.get_node(d):
-		ship_d.get_node(d).emit_signal("toggle_door")
+		if 1 > 0:
+			ship_d.get_node(d).emit_signal("toggle_door")
 	else:
 		term_println("Door not found.")
