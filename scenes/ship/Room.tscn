@@ -27,7 +27,7 @@ size = Vector3(7, 0, 7)
 size = Vector3(7, 0.25, 7)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yq1h2"]
-size = Vector3(0, 3, 3)
+size = Vector3(0, 3, 2)
 
 [sub_resource type="BoxMesh" id="BoxMesh_nl5f6"]
 size = Vector3(0.25, 3, 3)
@@ -36,16 +36,18 @@ size = Vector3(0.25, 3, 3)
 size = Vector2(7, 7)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_mj3hu"]
-size = Vector3(7.5, 3, 7.5)
+size = Vector3(7, 3, 7)
 
 [node name="Room" type="StaticBody3D"]
 script = ExtResource("1_l4y7s")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+visible = false
 navigation_mesh = SubResource("NavigationMesh_8gmo3")
 
 [node name="Detector" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.997791, 0, 0, 0, 0.997791, 0, 0, 0, 0.997791, 0, 1, 0)
+visible = false
 shape = SubResource("BoxShape3D_oxdqs")
 disabled = true
 
@@ -187,6 +189,9 @@ mesh = SubResource("BoxMesh_nl5f6")
 [node name="Holder_StationOxygen" type="Node3D" parent="Props"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3, 1.5, -2.15)
 
+[node name="Holder_StationRecharge" type="Node3D" parent="Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.3, 1.5, 2.15)
+
 [node name="Floor" type="StaticBody3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
@@ -198,6 +203,7 @@ mesh = SubResource("PlaneMesh_3f4da")
 
 [node name="Inside" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+visible = false
 collision_layer = 16
 collision_mask = 16
 
@@ -206,6 +212,7 @@ shape = SubResource("BoxShape3D_mj3hu")
 
 [node name="Sensors" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+visible = false
 
 [node name="PosZ" type="RayCast3D" parent="Sensors"]
 target_position = Vector3(0, 0, 4)

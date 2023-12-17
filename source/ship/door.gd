@@ -4,6 +4,10 @@ signal close_door
 signal open_door
 signal toggle_door
 
+var inside = false
+
+var rng = RandomNumberGenerator
+
 @export var state : String
 
 func _close_door(): 
@@ -17,11 +21,10 @@ func _open_door():
 	state = "open"
 
 func _toggle_door(): 
-	if state == "open":
+	if state == "open" and inside == false:
 		$AnimationPlayer.play("door_close")
 		$AudioStreamPlayer3D.play()
 		$Sliding/Glyph.modulate = Color(100,0,0)
-		$Timer.start()
 		state = "closed"
 	elif state == "closed":
 		$AnimationPlayer.play("door_open")
@@ -42,10 +45,11 @@ func _ready():
 	$AnimationPlayer.play("door_open")
 	$Sliding/Glyph.modulate = Color(0,100,0)
 	
-#unc _process(delta):
-	#emit_signal("open_door"
+	rng = RandomNumberGenerator.new()
+	$Timer.wait_time = rng.randi_range(64,1024)
+	$Timer.start()
 
 func _on_timer_timeout():
-	if state == "closed": 
-		_toggle_door()
-	pass # Replace with function body.
+	_toggle_door()
+	$Timer.wait_time = rng.randi_range(64,1024)
+	$Timer.start()

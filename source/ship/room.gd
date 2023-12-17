@@ -21,14 +21,14 @@ var scn_btst
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	scn_o2st = ResourceLoader.load("res://scenes/ship/props/StationOxygen.tscn")
-	
+	scn_btst = ResourceLoader.load("res://scenes/ship/props/StationRecharge.tscn")
 	
 	$Glyph/Name.text = name
 	rng = RandomNumberGenerator.new()
 	var omnilight : OmniLight3D = $Ceiling/OmniLight3D
 	omnilight.visible = false 
 	var r = rng.randf()
-	if r > 0.9:
+	if r > 0.8:
 		omnilight.visible = true
 	$Inside.connect("body_entered", _r_entered)
 	connect("r_setup", _r_setup)
@@ -62,6 +62,9 @@ func _r_setup():
 	if rt == "Oxygen":
 		var o = scn_o2st.instantiate()
 		$Props/Holder_StationOxygen.add_child(o)
+	if rt == "Recharge":
+		var o = scn_btst.instantiate()
+		$Props/Holder_StationRecharge.add_child(o)
 
 func _r_entered(n):
 	print(n.name, " entered ", name, " at ", Data.gs_d[name])

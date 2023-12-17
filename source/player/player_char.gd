@@ -24,8 +24,8 @@ var stat_oxy_m = 100
 var stat_bat = 100
 var stat_bat_m = 100
 @export
-var stat_stm = 100
-var stat_stm_m = 100 
+var stat_stm = 1000
+var stat_stm_m = 1000
 
 @export
 var nav_room = "r0"
@@ -43,7 +43,7 @@ func _ready():
 	cam = $SubViewport/ThirdPerson
 	#$HUD/System.visible = false;
 	
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 	
 	rng = RandomNumberGenerator.new()
 	
@@ -54,9 +54,10 @@ func _ready():
 	$Sounds/Ambient/Timer.connect("timeout", _on_clunk)
 	$Sounds/Ambient/Timer.start()
 	
+	$HUD/Window.player = self
 	
 	nav_ur.connect(_nav_ur)
-
+	
 	_status_update()
 	
 func _process(delta):
@@ -98,9 +99,11 @@ func _physics_process(delta):
 			stat_stm -= 1
 			velocity.x = direction.x * SPEED * 2
 			velocity.z = direction.z * SPEED * 2
+			#$HUD/Stamina.show()
 		else:
 			velocity.x = direction.x * SPEED
 			velocity.z = direction.z * SPEED
+			#$HUD/Stamina.hide()
 		$AnimationPlayer.play("player/p_walking")
 	else:
 		$AnimationPlayer.stop()
@@ -124,7 +127,7 @@ func _physics_process(delta):
 func _input(event):
 		
 	if event.is_action_pressed("onset_showsystem") and !$HUD/Window.visible:
-		Input.mouse_mode = Input.MOUSE_MODE_CONFINED
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		$HUD/Window.show()
 		in_system = true
 	else:
@@ -166,7 +169,7 @@ func _status_update():
 		stat_oxy -= 0.1
 		
 	if stat_act == "filling_bt" and stat_bat < stat_bat_m:
-		stat_oxy += 1
+		stat_bat += 1
 		$HUD/Cursor/Info.text = str(stat_bat).pad_decimals(0)
 		#$Sounds/OxygenFilling.play()
 	
@@ -174,7 +177,7 @@ func _status_update():
 	if stat_act == "":
 		$HUD/Cursor/Info.text = ""
 		
-	if stat_oxy == 0: 
+	if stat_oxy <= 0: 
 		get_tree().quit()
 	
 	if !running and stat_stm < stat_stm_m:
@@ -186,6 +189,7 @@ func _status_update():
 	
 	$HUD/Window/System/Status/Label/Oxygen.value = stat_oxy
 	$HUD/Window/System/Status/Label2/Battery.value = stat_bat
+	$HUD/Stamina.value = stat_stm
 	stat_up.start()
 	pass
 

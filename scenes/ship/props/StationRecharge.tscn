@@ -1,3 +1,24 @@
-[gd_scene format=3 uid="uid://bgk2o25vnejgc"]
+[gd_scene load_steps=4 format=3 uid="uid://bgk2o25vnejgc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hm2ge"]
+albedo_color = Color(0.533333, 0.14902, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_b38cg"]
+material = SubResource("StandardMaterial3D_hm2ge")
+size = Vector3(0.1, 0.5, 0.25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6y1u4"]
+size = Vector3(0.1, 0.5, 0.25)
 
 [node name="StationRecharge" type="Node3D"]
+
+[node name="Recharge Station" type="Area3D" parent="."]
+collision_layer = 8
+collision_mask = 8
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Recharge Station"]
+layers = 9
+mesh = SubResource("BoxMesh_b38cg")
+
+[node name="StationRecharge" type="CollisionShape3D" parent="Recharge Station"]
+shape = SubResource("BoxShape3D_6y1u4")

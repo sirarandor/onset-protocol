@@ -32,7 +32,7 @@ transform = Transform3D(-0.015, 0, -1.31134e-09, 0, 0.015, 0, 1.31134e-09, 0, -0
 
 [node name="[ UNKNOWN ]" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-collision_layer = 152
+collision_layer = 136
 collision_mask = 8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="[ UNKNOWN ]"]
