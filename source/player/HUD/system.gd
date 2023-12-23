@@ -27,16 +27,18 @@ func _input(event):
 	
 	#Terminal Control
 	if event.is_action_pressed("ui_accept"):
-		$System/Terminal/TextEdit.text = $System/Terminal/TextEdit.text + "$ " + $System/Terminal/LineEdit.text + "\n"
-		var cmd = $System/Terminal/LineEdit.text
+		var cmd = $System/Terminal/LineEdit.text.to_lower()
+		$System/Terminal/TextEdit.text = $System/Terminal/TextEdit.text + "$ " + cmd + "\n"
 		if cmd.begins_with("d"):
 			term_tsd(cmd)
-		elif cmd.begins_with("r"):
-			term_tsr(cmd)
+		#elif cmd.begins_with("r"):
+		#	term_tsr(cmd)
 		elif cmd == "help":
 			$System/Tutorial.visible = !$System/Tutorial.visible
 		$System/Terminal/LineEdit.text = ""
-
+		
+	if event.is_action_pressed("ui_cancel"):
+		Data.has_died = true 
 	pass
 
 
@@ -52,10 +54,10 @@ func term_tsd(d : String):
 			player.stat_bat -= 10
 	else:
 		term_println("Door not found.")
-
+	
 #Teleport to a specific room.
-func term_tsr(r : String): 
-	if ship_r.get_node(r):
-		$/root/Main/Game/Ship/Players/Player.position = ship_r.get_node(r).position
-	else:
-		term_println("Door not found.")
+#func term_tsr(r : String): 
+#	if ship_r.get_node(r):
+#		$/root/Main/Game/Ship/Players/Player.position = ship_r.get_node(r).position
+#	else:
+#		term_println("Door not found.")

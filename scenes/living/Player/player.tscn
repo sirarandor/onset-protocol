@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://hml01fgl3xwy"]
+[gd_scene load_steps=38 format=3 uid="uid://hml01fgl3xwy"]
 
 [ext_resource type="Script" path="res://source/player/player_char.gd" id="1_o2fjf"]
 [ext_resource type="AudioStream" uid="uid://gayqvmsvugod" path="res://content/audio/player/footstep-1-83098.mp3" id="2_o12bw"]
@@ -209,6 +209,11 @@ colors = PackedColorArray(0, 0, 0, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_ylfeo"]
 gradient = SubResource("Gradient_r85f4")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bs6s0"]
+bg_color = Color(0, 0, 0, 0.501961)
+expand_margin_left = 8.0
+expand_margin_right = 8.0
+
 [sub_resource type="Environment" id="Environment_m76vd"]
 glow_enabled = true
 fog_light_color = Color(1, 1, 1, 1)
@@ -271,9 +276,10 @@ libraries = {
 
 [node name="Ambient" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2.29017, -0.141594)
-light_energy = 0.01
-spot_range = 6.51803
-spot_angle = 64.2844
+visible = false
+light_energy = 0.5
+spot_range = 8.0
+spot_angle = 75.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -509,19 +515,22 @@ transform = Transform3D(-0.4, 0, -3.49691e-08, 0, 0.4, 0, 3.49691e-08, 0, -0.4, 
 margin = 0.25
 
 [node name="Flashlight" type="SpotLight3D" parent="FirstPerson/SpringArm3D"]
-transform = Transform3D(-2.5, 0, 2.18557e-07, 0, 2.5, 0, -2.18557e-07, 0, -2.5, 0, 0, 0)
-light_energy = 0.5
+transform = Transform3D(-2.5, 0, -2.18557e-07, 0, 2.5, 0, 2.18557e-07, 0, -2.5, 0, 0, 0)
+light_energy = 0.4
 light_indirect_energy = 0.0
 light_projector = ExtResource("4_uyph4")
 shadow_enabled = true
-spot_range = 32.0
-spot_angle = 30.0
+spot_range = 18.0
+spot_angle = 40.0
 spot_angle_attenuation = 0.05
 
 [node name="Interact" type="RayCast3D" parent="FirstPerson"]
 target_position = Vector3(0, 0, -2)
 collision_mask = 8
 collide_with_areas = true
+
+[node name="Carrying" type="Node3D" parent="FirstPerson"]
+transform = Transform3D(0.963537, -0.267575, 0, 0.267575, 0.963537, 0, 0, 0, 1, 0.175161, -0.357078, -1.2243)
 
 [node name="StatusUpdater" type="Timer" parent="."]
 wait_time = 0.25
@@ -622,7 +631,7 @@ offset_top = -24.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 16
-placeholder_text = "$ command"
+placeholder_text = "$ enter help for help"
 max_length = 64
 
 [node name="TextEdit" type="TextEdit" parent="HUD/Window/System/Terminal"]
@@ -714,13 +723,15 @@ text = "                            - HELP -
 [ESC]   TO EXIT
 
 CLICK ON THE TERMINAL TO ENTER COMMANDS:
- - TYPING A DOOR NAME CLOSES IT
-   TYPE DOOR NAME AGAIN TO OPEN IT
+ - ENTER A DOOR NAME TO TOGGLE IT
    CLOSING/OPENING DOORS TAKES POWER
- - TYPING help TOGGLES THIS
+ - ENTERING help TOGGLES THIS
 
 YOUR OXYGEN WILL SLOWLY RUN OUT, FIND OXYGEN STATIONS TO REPLENISH IT
 FIND RECHARGE STATIONS TO REGAIN BATTERY POWER
+
+ENGINES REQUIRE POWER
+TRANSMIT ONSET PROTOCOL
 
 YOU  ARE  BEING  WATCHED..."
 
@@ -750,40 +761,39 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("13_pqkti")
 theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_bs6s0")
 text = "[test]"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Info" type="Label" parent="HUD/Cursor"]
+[node name="ProgressBar" type="ProgressBar" parent="HUD/Cursor"]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -10.0
-offset_right = 20.0
-offset_bottom = 14.0
+offset_left = -64.0
+offset_top = 2.0
+offset_right = 64.0
+offset_bottom = 18.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(1, 0, 0, 1)
-theme_override_fonts/font = ExtResource("13_pqkti")
-theme_override_font_sizes/font_size = 10
-horizontal_alignment = 1
-vertical_alignment = 1
+theme = ExtResource("5_5ex1g")
+show_percentage = false
 
 [node name="TextureRect" type="TextureRect" parent="HUD"]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -12.0
-offset_top = -12.0
-offset_right = 12.0
-offset_bottom = 12.0
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("11_vmf6d")
@@ -824,16 +834,17 @@ theme_override_font_sizes/font_size = 16
 [node name="Stamina" type="ProgressBar" parent="HUD"]
 visible = false
 layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -4.0
-offset_bottom = 24.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -124.0
+offset_top = 24.0
+offset_right = 116.0
+offset_bottom = 36.0
 grow_horizontal = 2
-grow_vertical = 0
 theme = ExtResource("5_5ex1g")
-max_value = 1000.0
+max_value = 500.0
+step = 1.0
 show_percentage = false
 
 [node name="SubViewport" type="SubViewport" parent="."]

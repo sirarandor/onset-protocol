@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://csi0qhdy054av"]
+[gd_scene load_steps=12 format=3 uid="uid://csi0qhdy054av"]
 
 [ext_resource type="Script" path="res://source/intruder.gd" id="1_ydwlh"]
 [ext_resource type="PackedScene" uid="uid://bte5lj51hq8is" path="res://content/meshes/IntruderModel.tscn" id="2_5n6bu"]
@@ -6,6 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://b14qlxv8lgne1" path="res://content/textures/intruder/glyph.png" id="3_cv0qb"]
 [ext_resource type="AudioStream" uid="uid://cvvoob0b5fmyc" path="res://content/audio/alien/seeking2.mp3" id="4_gpqk8"]
 [ext_resource type="AudioStream" uid="uid://b4iw5a7f30s87" path="res://content/audio/alien/seeking3.mp3" id="5_gf026"]
+[ext_resource type="AudioStream" uid="uid://mt1luklncris" path="res://content/audio/alien/active1.mp3" id="7_5eqem"]
+[ext_resource type="AudioStream" uid="uid://h1yl6ywe76bt" path="res://content/audio/alien/active2.mp3" id="8_xdy2g"]
+[ext_resource type="AudioStream" uid="uid://bkq4r8ns8vlnt" path="res://content/audio/alien/active3.mp3" id="9_b5aay"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3nwt7"]
 height = 2.25
@@ -55,5 +58,17 @@ stream = ExtResource("4_gpqk8")
 stream = ExtResource("5_gf026")
 
 [node name="Timer" type="Timer" parent="Sounds"]
+
+[node name="Active1" type="AudioStreamPlayer3D" parent="Sounds"]
+stream = ExtResource("7_5eqem")
+volume_db = -4.0
+
+[node name="Active2" type="AudioStreamPlayer3D" parent="Sounds"]
+stream = ExtResource("8_xdy2g")
+volume_db = -4.0
+
+[node name="Active3" type="AudioStreamPlayer3D" parent="Sounds"]
+stream = ExtResource("9_b5aay")
+volume_db = -4.0
 
 [node name="Active" type="Timer" parent="."]

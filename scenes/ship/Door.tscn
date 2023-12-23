@@ -1,8 +1,10 @@
-[gd_scene load_steps=19 format=3 uid="uid://cf17jkxwqvvj2"]
+[gd_scene load_steps=22 format=3 uid="uid://cf17jkxwqvvj2"]
 
 [ext_resource type="Script" path="res://source/ship/door.gd" id="1_s8jpy"]
 [ext_resource type="AudioStream" uid="uid://c4q7x0vr1do0p" path="res://content/audio/door/heavy-mechancial-door-open-6934.mp3" id="2_xolqg"]
 [ext_resource type="FontFile" uid="uid://li877s3ntbxt" path="res://content/fonts/Mx437_DOS-V_re_ANK16.ttf" id="3_6108n"]
+[ext_resource type="Material" uid="uid://bna77f7342pk2" path="res://rendering/materials/debug/wall.tres" id="3_tgitg"]
+[ext_resource type="Texture2D" uid="uid://hcem2hbuwyfy" path="res://rendering/materials/update_1/door_floor/door_floor_albedo.png" id="4_702sg"]
 
 [sub_resource type="Animation" id="Animation_wac63"]
 resource_name = "door_close"
@@ -54,7 +56,11 @@ size = Vector3(0.75, 3, 0.5)
 [sub_resource type="BoxMesh" id="BoxMesh_ve6f8"]
 size = Vector3(0.75, 3, 0.5)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_me65y"]
+albedo_texture = ExtResource("4_702sg")
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_r1m36"]
+material = SubResource("StandardMaterial3D_me65y")
 size = Vector2(1, 2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3m1n1"]
@@ -91,6 +97,7 @@ collision_layer = 33
 shape = SubResource("BoxShape3D_bxwuo")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Sliding"]
+material_override = ExtResource("3_tgitg")
 mesh = SubResource("BoxMesh_skq2i")
 
 [node name="Glyph" type="Sprite3D" parent="Sliding"]
@@ -119,6 +126,7 @@ shape = SubResource("BoxShape3D_od4h3")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Frames/StaticBody3D"]
 layers = 3
+material_override = ExtResource("3_tgitg")
 mesh = SubResource("BoxMesh_r3iiw")
 skeleton = NodePath("../CollisionShape3D")
 
@@ -130,6 +138,7 @@ shape = SubResource("BoxShape3D_od4h3")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Frames/StaticBody3D2"]
 layers = 3
+material_override = ExtResource("3_tgitg")
 mesh = SubResource("BoxMesh_ve6f8")
 skeleton = NodePath("../CollisionShape3D")
 

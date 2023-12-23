@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://cgvei13cn0kv3"]
+
+[ext_resource type="PackedScene" uid="uid://dxtdqircefwu1" path="res://content/meshes/fuel_reciver.tscn" id="1_fejpb"]
+[ext_resource type="Script" path="res://source/ship/props/fuelreciever.gd" id="1_ljksx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kx6wn"]
+size = Vector3(1.5, 1.25, 1.5)
+
+[node name="Fuel Reciever" type="Node3D"]
+script = ExtResource("1_ljksx")
+
+[node name="Reciever" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0195, 0)
+
+[node name="Fuel Reciever" type="Area3D" parent="."]
+collision_layer = 9
+collision_mask = 9
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Fuel Reciever"]
+shape = SubResource("BoxShape3D_kx6wn")
+
+[node name="fuel_reciever" parent="." instance=ExtResource("1_fejpb")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)

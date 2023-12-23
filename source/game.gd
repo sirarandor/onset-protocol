@@ -13,4 +13,4 @@ func _process(delta):
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
-		get_tree().quit()
+		Data.has_died = true 

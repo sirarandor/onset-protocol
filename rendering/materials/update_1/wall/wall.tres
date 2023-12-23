@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://bthssi1dpre18"]
+
+[ext_resource type="Texture2D" uid="uid://c6a5a36o4dyab" path="res://rendering/materials/update_1/wall/wall_albedo.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://bp1p4x7g2h8kx" path="res://rendering/materials/update_1/wall/wall_normal.png" id="3"]
+
+[resource]
+albedo_color = Color(0.46875, 0.46875, 0.46875, 1)
+albedo_texture = ExtResource("1")
+roughness = 0.8
+normal_enabled = true
+normal_texture = ExtResource("3")
+uv1_triplanar = true

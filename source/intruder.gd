@@ -2,7 +2,6 @@ extends CharacterBody3D
 
 @onready
 var player = $/root/Main/Game/Ship/Players/Player
-var mvs = 2
 var active = false
 
 signal nav_ur
@@ -51,7 +50,13 @@ func _process(delta):
 func _physics_process(delta):
 	look_at(player.position)
 	#print($Active.time_left)
-	
+	var mvs
+	if Data.has_fuel:
+		mvs = 3.5
+	else: 
+		mvs = 2.5
+
+
 	if active == true:
 		if lp != position:
 			$Model/AnimationPlayer.play("ArmatureAction")
@@ -74,11 +79,11 @@ func _physics_process(delta):
 		if nrp.z > position.z: 
 			velocity.z = mvs
 			
-		print("POS: ", position.round(), " ROOM: ", nav_room, " NEXT ROOM: ", nr)
+		#print("POS: ", position.round(), " ROOM: ", nav_room, " NEXT ROOM: ", nr)
 	#print(nr)
 	#print(nav_room)
 	if nav_room == player.nav_room:
-		velocity = (transform.basis * Vector3(0,0,-1).normalized()) * 4.5
+		velocity = (transform.basis * Vector3(0,0,-1).normalized()) * (mvs * 1.5)
 		
 	lp = position
 	move_and_slide()
@@ -97,6 +102,8 @@ func nav_rdev():
 	var current_room = get_node("/root/Main/Game/Ship/Rooms/" + nav_room)
 	var direction_result = Vector2(0,0)
 	var lost = true
+
+	#print(current_room.sensors)
 
 	#Determine which distance is closer
 
@@ -153,11 +160,19 @@ func nav_rdev():
 
 func _on_soundtimer():
 	$Sounds/Timer.wait_time = rng.randi_range(32,128)
-	
+	if active == true:
+		match rng.randi_range(1,3):
+			1: 
+				$Sounds/Active1.play()
+			2:
+				$Sounds/Active2.play()
+			3: 
+				$Sounds/Active3.play()
 	$Sounds/Timer.start()
 
 func _on_activate():
-	$Active.wait_time = rng.randi_range(16,128)
+	$Active.wait_time = rng.randi_range(32,128)
+
 	if active == true:
 		hide()
 		position.y = -5

@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://dmrmwxflqww2r"]
+
+[ext_resource type="Script" path="res://source/ship/props/commterminal.gd" id="1_hefwh"]
+[ext_resource type="PackedScene" uid="uid://diukjhf7bcybe" path="res://content/meshes/comm_terminal.tscn" id="1_k0x5a"]
+[ext_resource type="FontFile" uid="uid://li877s3ntbxt" path="res://content/fonts/Mx437_DOS-V_re_ANK16.ttf" id="3_58fu3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bvg1i"]
+size = Vector3(1, 2, 1)
+
+[node name="Communication Terminal" type="Area3D"]
+transform = Transform3D(-0.559193, 0, -0.829038, 0, 1, 0, 0.829038, 0, -0.559193, 0, 0, 0)
+collision_layer = 9
+collision_mask = 9
+script = ExtResource("1_hefwh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_bvg1i")
+
+[node name="com" parent="CollisionShape3D" instance=ExtResource("1_k0x5a")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.5, 0)
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(-1, 0, 8.9407e-08, 0, 1, 0, -8.9407e-08, 0, -1, -0.00395451, 0.3, -0.141622)
+double_sided = false
+texture_filter = 2
+modulate = Color(0, 1, 0.439216, 1)
+outline_modulate = Color(0, 0, 0, 0)
+font = ExtResource("3_58fu3")
+font_size = 16
+outline_size = 0
+autowrap_mode = 3
+width = 125.0

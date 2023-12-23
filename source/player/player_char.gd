@@ -15,7 +15,9 @@ var in_system
 var inter_cast
 var inter_name
 
-var stat_act
+var carrying = false
+
+var stat_act = ""
 var stat_up 
 @export
 var stat_oxy = 100
@@ -24,8 +26,8 @@ var stat_oxy_m = 100
 var stat_bat = 100
 var stat_bat_m = 100
 @export
-var stat_stm = 1000
-var stat_stm_m = 1000
+var stat_stm = 500
+var stat_stm_m = 500
 
 @export
 var nav_room = "r0"
@@ -33,13 +35,14 @@ var nav_room = "r0"
 #Signal to update the room we are in.
 signal nav_ur
 
-
-
+@onready
+var s_props = get_node("/root/Main/Game/Ship/Props")
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready():
+	#print(stat_oxy)
 	cam = $SubViewport/ThirdPerson
 	#$HUD/System.visible = false;
 	
@@ -57,7 +60,6 @@ func _ready():
 	$HUD/Window.player = self
 	
 	nav_ur.connect(_nav_ur)
-	
 	_status_update()
 	
 func _process(delta):
@@ -70,21 +72,26 @@ func _process(delta):
 		inter_cast = $FirstPerson/Interact.get_collider()
 		if inter_cast:
 			$HUD/Cursor.text = "[" + inter_cast.get("name") + "]"
+			$HUD/Cursor.show()
 			inter_name = inter_cast.get("name")
 		else:
 			$HUD/Cursor.text = ""
+			$HUD/Cursor.hide()
 			inter_name = ""
 			
 		
 func _physics_process(delta):
+	var acs = SPEED
+	if carrying:
+		acs = acs / 1.25
 	# Add the gravity.
 	#if not is_on_floor():
 		#velocity.y -= gravity * delta
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you shouwwwald replace UI actions with custom gameplay actions.
-	#if not is_on_floor():
-		#velocity.y -= gravity * delta
+	if not is_on_floor():
+		velocity.y -= gravity * delta
 
 	# Handle Jump.
 	#if Input.is_action_just_pressed("ui_accept") and is_on_floor():
@@ -95,14 +102,15 @@ func _physics_process(delta):
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction and !in_system:
-		if running and stat_stm > 0:
+		if running and stat_stm >= 1:
 			stat_stm -= 1
-			velocity.x = direction.x * SPEED * 2
-			velocity.z = direction.z * SPEED * 2
+			stat_oxy -= 0.01
+			velocity.x = direction.x * acs * 2
+			velocity.z = direction.z * acs * 2
 			#$HUD/Stamina.show()
 		else:
-			velocity.x = direction.x * SPEED
-			velocity.z = direction.z * SPEED
+			velocity.x = direction.x * acs
+			velocity.z = direction.z * acs
 			#$HUD/Stamina.hide()
 		$AnimationPlayer.play("player/p_walking")
 	else:
@@ -130,6 +138,7 @@ func _input(event):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		$HUD/Window.show()
 		in_system = true
+		stat_act = ""
 	else:
 		$HUD/Window.hide()
 	if !$HUD/Window.visible:
@@ -155,37 +164,61 @@ func _input(event):
 	if event.is_action_pressed("onset_interact"):
 		if inter_name == "Recharge Station":
 			stat_act = "filling_bt"
+
+	if event.is_action_pressed("onset_interact") and carrying == true:
+		if inter_name == "Fuel Reciever":
+			s_props.get_node("Fuel Reciever").emit_signal("placed")
+		else:
+			s_props.get_node("Fuel Cell").emit_signal("dropped")
+		carrying = false
+		
 			
+	if event.is_action_pressed("onset_interact"):
+		if inter_name == "Fuel Cell":
+			carrying = true
+			s_props.get_node("Fuel Cell").emit_signal("grabbed")
+	
+	if event.is_action_pressed("onset_interact"):
+		if inter_name == "Communication Terminal":
+			print("Trying to touch the comm terminal >:]")
+			s_props.get_node("Communication Terminal").emit_signal("pressed")
+
+
+	
+
+
 	if event.is_action_released("onset_interact"):
 		stat_act = ""
 
 
 func _status_update():
-	if stat_act == "filling_o2" and stat_oxy < stat_oxy_m:
+	if stat_act == "filling_o2" and stat_oxy < stat_oxy_m and inter_name == "Oxygen Station":
 		stat_oxy += 1
-		$HUD/Cursor/Info.text = str(stat_oxy).pad_decimals(0)
+		$HUD/Cursor/ProgressBar.value = stat_oxy
 		#$Sounds/OxygenFilling.play()
 	else:
 		stat_oxy -= 0.1
 		
-	if stat_act == "filling_bt" and stat_bat < stat_bat_m:
+	if stat_act == "filling_bt" and stat_bat < stat_bat_m and inter_name == "Recharge Station":
 		stat_bat += 1
-		$HUD/Cursor/Info.text = str(stat_bat).pad_decimals(0)
+		$HUD/Cursor/ProgressBar.value = stat_bat
 		#$Sounds/OxygenFilling.play()
 	
 	
 	if stat_act == "":
-		$HUD/Cursor/Info.text = ""
+		$HUD/Cursor/ProgressBar.hide()
+	else: 
+		$HUD/Cursor/ProgressBar.show()
 		
 	if stat_oxy <= 0: 
-		get_tree().quit()
+		Data.has_died = true
 	
 	if !running and stat_stm < stat_stm_m:
-		stat_stm += 1
+		stat_stm += 5
 	
 	if $Area3D.has_overlapping_areas():
 		$Sounds/Death.play()
-		get_tree().quit()
+		Data.has_died = true
 	
 	$HUD/Window/System/Status/Label/Oxygen.value = stat_oxy
 	$HUD/Window/System/Status/Label2/Battery.value = stat_bat

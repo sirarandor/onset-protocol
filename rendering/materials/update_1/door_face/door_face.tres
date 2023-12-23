@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://c15lf6bhjjak6"]
+
+[ext_resource type="Texture2D" uid="uid://dlnfc06cp4ryl" path="res://rendering/materials/update_1/door_face/door_face_albedo.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://c0by1tc48vllm" path="res://rendering/materials/update_1/door_face/door_face_normal.png" id="3"]
+
+[resource]
+albedo_color = Color(0.439295, 0.190022, 0.190022, 1)
+albedo_texture = ExtResource("1")
+metallic = 1.0
+roughness = 0.5
+normal_enabled = true
+normal_scale = 8.0
+normal_texture = ExtResource("3")
+uv1_triplanar = true

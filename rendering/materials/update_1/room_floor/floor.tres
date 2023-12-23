@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://rxfuqvflnt5t"]
+
+[ext_resource type="Texture2D" uid="uid://cji1tmnjsaje5" path="res://rendering/materials/update_1/room_floor/floor_albedo.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://bnfi6q3lbalbm" path="res://rendering/materials/update_1/room_floor/floor_normal.png" id="3"]
+
+[resource]
+albedo_color = Color(0.46875, 0.46875, 0.46875, 1)
+albedo_texture = ExtResource("1")
+roughness = 0.8
+normal_enabled = true
+normal_texture = ExtResource("3")

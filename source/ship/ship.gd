@@ -15,9 +15,8 @@ var DoorScene
 var BlockScene
 
 #Room type dictionaries
-var rtd_n = ["Communications", "Navigation", "Enviromental", "Reactor", "Engine", "Security"]
-var rtd_s = ["Storage", "Breaker", "Cabin"]
-var rtd_b = ["Oxygen", "Recharge", "", "", "", "", "", "", "", ""]
+var rtd_n = ["Communications", "Engine", "Storage"]
+var rtd_b = ["Oxygen", "Recharge"]
 
 #Rooms and Doors counter
 
@@ -28,7 +27,7 @@ func _ready():
 	RoomScene = ResourceLoader.load("res://scenes/ship/Room.tscn")
 	DoorScene = ResourceLoader.load("res://scenes/ship/Door.tscn")
 	BlockScene = ResourceLoader.load("res://scenes/ship/Block.tscn")
-	
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
@@ -144,14 +143,28 @@ func gen_bsl(rx, ry):
 			$Doors.add_child(b)
 			#print("Added a block ",c)
 	
-	#Randomly give room an oxygen station
-	for c in ac: 
-		var gns = "Rooms/r" + str(c)
-		get_node(gns).rt = rtd_b.pick_random()
-		#Tell the room to set itself up after we give it it's type
-		get_node(gns).emit_signal("r_setup")
-		pass 
+
+	var r_a = Data.gs_a
+
+	#Randomly give room an oxygen or recharge station
+	for i in ac/4:
+		var rp = r_a.pick_random()
+		r_a.erase(rp)
+		var r = "Rooms/" + rp
+		get_node(r).rt = rtd_b.pick_random()
 	
+	for i in rtd_n:
+		var rp = r_a.pick_random()
+		r_a.erase(rp)
+		var r = "Rooms/" + rp
+		get_node(r).rt = i
+	
+
+	for c in ac:
+		#Tell the room to set itself up after we give it it's type
+		get_node("Rooms/r" + str(c)).emit_signal("r_setup")
+	
+	print("Spawned intruder.")
 	#Randomly place the Intruder in the ship
 	var intruder = ResourceLoader.load("res://scenes/living/Intruder.tscn").instantiate()
 	intruder.position = get_node("Rooms/" + Data.gs_a.pick_random()).position

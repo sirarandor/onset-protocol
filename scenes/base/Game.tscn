@@ -16,6 +16,8 @@ script = ExtResource("2_iu4fa")
 
 [node name="Doors" type="Node" parent="Ship"]
 
+[node name="Props" type="Node" parent="Ship"]
+
 [node name="Players" type="Node" parent="Ship"]
 
 [node name="Player" parent="Ship/Players" instance=ExtResource("2_xctpk")]
